@@ -12,3 +12,8 @@ Sporty Sam is a health tracking mobile app that supports smart watches.
 ![1](/presentation/Slide7.JPG)
 ![1](/presentation/Slide8.JPG)
 ![1](/presentation/Slide9.JPG)
+
+
+![1](/presentation/yf.jpg)
+![1](/presentation/Web-Slider-01.png)
+
