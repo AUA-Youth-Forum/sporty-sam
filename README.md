@@ -34,6 +34,8 @@ In the real world, you have the advantage of getting a discount in local sports 
 ## Acknowledgments
 
 Youth Forum of the Asian University Alliance (AUA) is a project-based program for represented by a group of selected students from AUA member universities to address developmental issues in the region, enhance youth empowerment, and promote cultural and academic exchange. University of Colombo is honoured to have the opportunity to host  AUA Youth Forum 2019 under the theme of “Arogya Parama Laba”: Wellbeing beyond health.
+* https://auayf.cmb.ac.lk/
+* http://www.asianuniversities.org/
 ![1](/presentation/yf.jpg)<br>
 ![1](/presentation/Web-Slider-01.png)<br>
 
