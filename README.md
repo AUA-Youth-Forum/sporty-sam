@@ -27,6 +27,7 @@ In the real world, you have the advantage of getting a discount in local sports 
 * All are welcome to contribute to this project.
 * Contribution from the students of **'Asian University Alliance (AUA)'** member universities is highly appreciated.
 ## Authors
+* Participants of Asian University Alliance Youth Forum 2019.
 
 ## License
 
