@@ -4,11 +4,17 @@ Sporty Sam is a group project initiated at the Asian University Alliance Youth F
 Sporty Sam is a health tracking mobile app that supports smart watches. 
 
 ![1](/presentation/Slide1.JPG)
+Let’s meet Sam. Sam is my dear friend who is always nice to see me in the morning. For many students nowadays staying in good shape might not be easy. Sam, my virtual friend, is quite helpful to me. 
 ![1](/presentation/Slide2.JPG)
+When I do regular physical exercise, Sam is also fit and healthy, but once I don’t, Sam becomes fat and disease-prone. And who wants to have a diabetic pet? Therefore, it really motivates me to exercise. 
 ![1](/presentation/Slide3.JPG)
+The way it works is also very simple. Firstly, one needs to buy a watch, install the corresponding app on the phone, add personal parameters such as weight and height and now it is readyto go! The watch performs the function of a step tracker via accelerometer and GPS. The number of steps are converted into virtual money that can be further used as virtual transactions. It can also automatically count your BMI once you insert your weight and height. Last but not least, it uses a combination of PPG and EKG sensors, which can measure blood pressure and make measurements more precise.
 ![1](/presentation/Slide4.JPG)
+The special offer will be presented to university students to purchase an electronic watch with 20-50%discounts. This is expected to be accomplished through collaboration with Huawei and Xiaomi companies. 
 ![1](/presentation/Slide5.JPG)
+Given project has a plethora of benefits, by using both virtual and real-world approaches. By exercising more you can make your pet even more personalized in the virtual world by choosing its identity (animal or cartoon character). You can also share your extra energy coins with friends all over the globe. 
 ![1](/presentation/Slide6.JPG)
+In the real world, you have the advantage of getting a discount in local sports shops, eco shops or shared bikes.
 ![1](/presentation/Slide7.JPG)
 ![1](/presentation/Slide8.JPG)
 ![1](/presentation/Slide9.JPG)
