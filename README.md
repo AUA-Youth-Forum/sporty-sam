@@ -1,8 +1,9 @@
-# sporty-sam
+# Sporty-Sam
 Sporty Sam is a group project initiated at the Asian University Alliance Youth Forum 2019 held at University Of Colombo, Sri Lanka.
 
-Sporty Sam is a health tracking mobile app that supports smart watches. 
-
+## Getting Started
+### Introduction
+Sporty Sam is a health tracking mobile app that supports smart watches. <br>
 ![1](/presentation/Slide1.JPG)<br>
 Let’s meet Sam. Sam is my dear friend who is always nice to see me in the morning. For many students nowadays staying in good shape might not be easy. Sam, my virtual friend, is quite helpful to me. 
 ![1](/presentation/Slide2.JPG)<br>
@@ -17,7 +18,19 @@ Given project has a plethora of benefits, by using both virtual and real-world a
 In the real world, you have the advantage of getting a discount in local sports shops, eco shops or shared bikes.
 ![1](/presentation/Slide7.JPG)<br>
 ![1](/presentation/Slide8.JPG)<br>
-![1](/presentation/Slide9.JPG)<br>
+
+
+## Built with
+* Flutter
+
+## Contributing
+* All are welcome to contribute to this project.
+* Contribution from the students of **'Asian University Alliance (AUA)'** member universities is highly appreciated.
+## Authors
+
+## License
+
+## Acknowledgments
 
 Youth Forum of the Asian University Alliance (AUA) is a project-based program for represented by a group of selected students from AUA member universities to address developmental issues in the region, enhance youth empowerment, and promote cultural and academic exchange. University of Colombo is honoured to have the opportunity to host  AUA Youth Forum 2019 under the theme of “Arogya Parama Laba”: Wellbeing beyond health.
 ![1](/presentation/yf.jpg)<br>
