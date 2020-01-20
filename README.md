@@ -3,7 +3,7 @@ Sporty Sam is a group project initiated at the Asian University Alliance Youth F
 
 ## Table of Contents (Optional)
 - [Introduction](#introduction)
-- [Built with](#built)
+- [Built with](#builtwith)
 - [Installation](#installation)
 - [Contributing](#contributing)
 - [Authors](#authors)
