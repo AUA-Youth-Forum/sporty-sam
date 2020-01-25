@@ -1,7 +1,7 @@
 # Sporty-Sam
 Sporty Sam is a group project initiated at the Asian Universities Alliance Youth Forum 2019 held at University Of Colombo, Sri Lanka. This project won the 1st place at the youth forum. At the end of the event all the projects were forwarded to the World Health Organization, Sri Lanka.
 
-## Table of Contents (Optional)
+## Table of Contents
 - [Introduction](#introduction)
 - [Built with](#built)
 - [Installation](#installation)
