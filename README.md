@@ -38,6 +38,8 @@ Sporty Sam is a group project initiated at the Asian Universities Alliance Youth
 ## Contributing
 * All are welcome to contribute to this project.
 * Contribution from the students of **'Asian Universities Alliance (AUA)'** member universities is highly appreciated.
+* Here is the gitter chat account for discuss progress, issues. 
+** https://gitter.im/AUAYF2019project/community
 1. Fork it (<https://github.com/yourname/yourproject/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
