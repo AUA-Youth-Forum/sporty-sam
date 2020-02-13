@@ -36,6 +36,7 @@ Sporty Sam is a group project initiated at the Asian Universities Alliance Youth
 
 ## Installation
 * Fork your own branch and clone into your machine.
+* App files are inside the 'sporty_sam' folder.
 * Open then flutter app using your favourite coding IDE.
 
 ## Contributing
