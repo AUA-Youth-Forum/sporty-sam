@@ -32,8 +32,11 @@ Sporty Sam is a group project initiated at the Asian Universities Alliance Youth
 
 
 ## Built
-* Flutter
+* Flutter for Android and iOS
+
 ## Installation
+* Fork your own branch and clone into your machine.
+* Open then flutter app using your favourite coding IDE.
 
 ## Contributing
 * All are welcome to contribute to this project.
