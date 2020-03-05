@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home.dart';
+import 'homeNavigation.dart';
 import 'dart:async';
 
 void main(){
@@ -37,9 +38,12 @@ class _myappState extends State<myapp> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: FlutterLogo(
-          size: 400,
-          textColor: Colors.deepPurpleAccent[700],
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Text('Sporty Sam'),
+            Image.asset("assets/img/pic2.png"),
+            ],
         ),
 
       ),

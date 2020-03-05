@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'main.dart';
+
 class home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -25,10 +27,20 @@ class home extends StatelessWidget {
 
         ),
         body: Center(
-          child: Text(
-            'This is the home page of sporty sam',
-            style: TextStyle(fontSize: 20),
-          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Center(
+                child: Text(
+                    'This is Home',
+                  style: TextStyle(fontSize: 24,),
+                ),
+
+              ),
+
+
+            ],
+          )
         ),
       ),
     );
