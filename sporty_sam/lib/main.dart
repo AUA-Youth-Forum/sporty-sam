@@ -1,48 +1,24 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
-import 'dart:async';
 
-void main(){
-  runApp(
-      MaterialApp(
-        home: myapp(),
-      )
-  );
-}
+import './home.dart';
+import './login.dart';
+import './signup.dart';
 
-class myapp extends StatefulWidget {
-  @override
-  _myappState createState() => _myappState();
-}
+void main() => runApp(MyApp());
 
-class _myappState extends State<myapp> {
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(
-      Duration(seconds: 3),
-          (){
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context)=>home(),
-            )
-        );
-      },
-    );
-
-  }
-
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: FlutterLogo(
-          size: 400,
-          textColor: Colors.deepPurpleAccent[700],
-        ),
+    return MaterialApp(
+      title: 'Sporty Sam',
+      theme: ThemeData(
 
+        primarySwatch: Colors.blue,
       ),
+      home: LoginPage(title: 'Sam\'s Home'),
     );
   }
 }
+
+
