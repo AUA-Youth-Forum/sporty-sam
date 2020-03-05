@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'main.dart';
-import 'main.dart';
 
 class home extends StatelessWidget {
   @override
@@ -30,8 +29,10 @@ class home extends StatelessWidget {
         body: Center(
           child: Column(
             children: <Widget>[
-              
-              Text('This is Home'),
+              Center(
+                child: Text('This is Home'),
+              ),
+
 
             ],
           )
