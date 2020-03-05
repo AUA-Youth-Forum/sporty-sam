@@ -1,9 +1,9 @@
 # Sporty-Sam
-Sporty Sam is a group project initiated at the Asian University Alliance Youth Forum 2019 held at University Of Colombo, Sri Lanka.
+Sporty Sam is a group project initiated at the Asian Universities Alliance Youth Forum 2019 held at University Of Colombo, Sri Lanka. This project won the 1st place at the youth forum. At the end of the event all the projects were forwarded to the World Health Organization, Sri Lanka.
 
-## Table of Contents (Optional)
+## Table of Contents
 - [Introduction](#introduction)
-- [Built with](#builtwith)
+- [Built with](#built)
 - [Installation](#installation)
 - [Contributing](#contributing)
 - [Authors](#authors)
@@ -31,13 +31,19 @@ Sporty Sam is a group project initiated at the Asian University Alliance Youth F
 ![1](/presentation/Slide8.JPG)<br>
 
 
-## Built with
-* Flutter
+## Built
+* Flutter for Android and iOS
+
 ## Installation
+* Fork your own branch and clone into your machine.
+* App files are inside the 'sporty_sam' folder.
+* Open then flutter app using your favourite coding IDE.
 
 ## Contributing
 * All are welcome to contribute to this project.
-* Contribution from the students of **'Asian University Alliance (AUA)'** member universities is highly appreciated.
+* Contribution from the students of **'Asian Universities Alliance (AUA)'** member universities is highly appreciated.
+* Here is the gitter chat account for discuss progress, issues. 
+** https://gitter.im/AUAYF2019project/community
 1. Fork it (<https://github.com/yourname/yourproject/fork>)
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Commit your changes (`git commit -am 'Add some fooBar'`)
@@ -45,16 +51,17 @@ Sporty Sam is a group project initiated at the Asian University Alliance Youth F
 5. Create a new Pull Request
 
 ## Authors
-* Participants of Asian University Alliance Youth Forum 2019.
+* Participants of Asian Universities Alliance Youth Forum 2019.
 
 ## License
 
 ## Acknowledgments
 
-Youth Forum of the Asian University Alliance (AUA) is a project-based program for represented by a group of selected students from AUA member universities to address developmental issues in the region, enhance youth empowerment, and promote cultural and academic exchange. University of Colombo is honoured to have the opportunity to host  AUA Youth Forum 2019 under the theme of “Arogya Parama Laba”: Wellbeing beyond health.<br>
+Youth Forum of the Asian Universities Alliance (AUA) is a project-based program for represented by a group of selected students from AUA member universities to address developmental issues in the region, enhance youth empowerment, and promote cultural and academic exchange. University of Colombo is honoured to have the opportunity to host  AUA Youth Forum 2019 under the theme of “Arogya Parama Laba”: Wellbeing beyond health.<br>
 * https://auayf.cmb.ac.lk/
 * http://www.asianuniversities.org/
 <br><br>
-![1](/presentation/yf.jpg)<br>
+![1](/presentation/yf.jpg) ![1](/presentation/logo.png) ![1](/presentation/who.jpg)<br>
+![1](/presentation/uni.jpg)<br>
 ![1](/presentation/Web-Slider-01.png)<br>
 
