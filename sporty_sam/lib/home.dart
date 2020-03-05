@@ -28,9 +28,14 @@ class home extends StatelessWidget {
         ),
         body: Center(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Center(
-                child: Text('This is Home'),
+                child: Text(
+                    'This is Home',
+                  style: TextStyle(fontSize: 24,),
+                ),
+
               ),
 
 
