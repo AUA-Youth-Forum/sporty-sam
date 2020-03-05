@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'home.dart';
+import 'signup.dart';
 
 
 class LoginPage extends StatefulWidget {
@@ -44,22 +45,29 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.all(0.0),
         textColor: Colors.white,
         child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: <Color>[
-                Color(0xffdf8e33),
-                Color(0xffdf8e33),
-                Color(0xffdf8e33),
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.symmetric(vertical: 15),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: Colors.grey.shade200,
+                    offset: Offset(2, 4),
+                    blurRadius: 5,
+                    spreadRadius: 2)
               ],
-            ),
-          ),
-          padding: const EdgeInsets.all(10.0),
-          child: const Text(
-              'Login and enjoy',
-              style: TextStyle(fontSize: 20)
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [Color(0xffdf8e33), Color(0xfff7892b)])),
+          child: Text(
+            'Login and Enjoy',
+            style: TextStyle(fontSize: 20, color: Colors.white),
           ),
         ),
-        onPressed: () {});
+        onPressed: () {}
+    );
   }
 
   Widget _divider() {
@@ -111,10 +119,10 @@ class _LoginPageState extends State<LoginPage> {
             width: 10,
           ),
           InkWell(
-//            onTap: () {
-//              Navigator.push(context,
-//                  MaterialPageRoute(builder: (context) => SignUpPage()));
-//            },
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SignUpPage()));
+            },
             child: Text(
               'Register',
               style: TextStyle(
