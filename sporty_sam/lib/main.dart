@@ -20,8 +20,9 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.orange,
       ),
-//      home: MyHomePage(title: 'Sam\'s Home'),
-      home: ListViewCard(),
+      home: MyHomePage(title: 'Sam\'s Home'),
+      //home: HealthTips(),
+//      home: LoginPage(),
     );
   }
 }
