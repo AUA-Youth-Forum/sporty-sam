@@ -6,6 +6,7 @@ import './login.dart';
 import './signup.dart';
 //import 'homeNavigation.dart';
 import 'petshop.dart';
+import 'healthTips.dart';
 
 void main() => runApp(MyApp());
 
@@ -17,9 +18,11 @@ class MyApp extends StatelessWidget {
       title: 'Sporty Sam',
       theme: ThemeData(
 
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.orange,
       ),
       home: MyHomePage(title: 'Sam\'s Home'),
+      //home: HealthTips(),
+//      home: LoginPage(),
     );
   }
 }
