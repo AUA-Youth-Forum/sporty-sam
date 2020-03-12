@@ -97,27 +97,24 @@ class _ChallengePageState extends State<ChallengePage> {
             SizedBox(
               height: 10,
             ),
-            SingleChildScrollView(
-                child: Column(
-              children: <Widget>[
-                //heading
-                Container(
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            'Rank',
-                            style: TextStyle(
-                                color: Color(0xfff79c4f),
-                                fontSize: 22,
-                                fontWeight: FontWeight.w600),
-                          ),
-                        ),
+            //heading
+            Container(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        'Rank',
+                        style: TextStyle(
+                            color: Color(0xfff79c4f),
+                            fontSize: 22,
+                            fontWeight: FontWeight.w600),
                       ),
-                      Expanded(
-                          child: Center(
+                    ),
+                  ),
+                  Expanded(
+                      child: Center(
                         child: Text(
                           'Name',
                           style: TextStyle(
@@ -126,8 +123,8 @@ class _ChallengePageState extends State<ChallengePage> {
                               fontWeight: FontWeight.w600),
                         ),
                       )),
-                      Expanded(
-                          child: Center(
+                  Expanded(
+                      child: Center(
                         child: Text(
                           'Pet\'s Score',
                           style: TextStyle(
@@ -136,9 +133,13 @@ class _ChallengePageState extends State<ChallengePage> {
                               fontWeight: FontWeight.w600),
                         ),
                       )),
-                    ],
-                  ),
-                ),
+                ],
+              ),
+            ),
+            SingleChildScrollView(
+                child: Column(
+              children: <Widget>[
+
                 //data rows
                 _tableDataCell('1', 'Peter', '109472'),
                 SizedBox(
