@@ -81,6 +81,7 @@ class _HealthTipsState extends State<HealthTips> {
         body: SingleChildScrollView(
             child: Column(
           children: <Widget>[
+
             _tipsContent(0),
             _tipsContent(1),
             _tipsContent(2),
