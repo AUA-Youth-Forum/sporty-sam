@@ -122,13 +122,13 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Sam',
+                'Welcome to Sporty Sam',
                 style: Theme.of(context).textTheme.display1,
               ),
               Text(
                 widget.userId,
                 //style: Theme.of(context).textTheme.display1,
-                
+
               ),
               FlatButton(
                   child: new Text('Logout',
