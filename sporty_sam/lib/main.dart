@@ -1,9 +1,8 @@
 
 import 'package:flutter/material.dart';
 
-import './home.dart';
-import './login.dart';
-import './signup.dart';
+import 'package:sporty_sam/services/authentication.dart';
+import 'package:sporty_sam/root_page.dart';
 
 
 void main() => runApp(MyApp());
@@ -18,7 +17,7 @@ class MyApp extends StatelessWidget {
 
         primarySwatch: Colors.orange,
       ),
-      home: MyHomePage(title: 'Sam\'s Home'),
+      home: new RootPage(auth: new Auth()),
 
     );
   }
