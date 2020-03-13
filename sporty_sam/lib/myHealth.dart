@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import './const/circular_bar_typed.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import  './assets/icons/my_flutter_app_icons.dart';
@@ -24,12 +24,18 @@ class _MyHealthPageState extends State<MyHealthPage> {
   int _activeCalories = 1535;
   double _activeDistance = 1.39;
   double _sleepHours=7;
+  double _bloodPreasure= 44.3;
+  double _bloodGlucoes=150;
+  double _weight=45;
+  double _height=153;
+  double _bmi=19.2;
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('My Health'),
+          title: Text('My Health History'),
         ),
         body: SingleChildScrollView(
             child: Column(
@@ -123,7 +129,7 @@ class _MyHealthPageState extends State<MyHealthPage> {
                         Icon(
                           Icons.directions_run,
                           size: 25,
-                          color: Colors.black,
+                          color: Colors.green,
                         ),
                         SizedBox(width: 10,height: 40,),
                         Text('Active Time',
@@ -137,13 +143,13 @@ class _MyHealthPageState extends State<MyHealthPage> {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            Text('$_activeTime /',
+                            Text('$_activeTime ',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 30),
                                 textAlign: TextAlign.left),
-                            Text('$_activeTotal mins',
+                            Text('/ $_activeTotal mins',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
+                                     fontSize: 20),
                                 textAlign: TextAlign.left),
 
                           ],
@@ -187,7 +193,7 @@ class _MyHealthPageState extends State<MyHealthPage> {
                         Icon(
                           CustomIcons.bed,
                           size: 25,
-                          color: Colors.black,
+                          color: Colors.blue,
                         ),
                         SizedBox(width: 10,height: 40,),
                         Text('Sleep Time',
@@ -201,9 +207,13 @@ class _MyHealthPageState extends State<MyHealthPage> {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            Text('$_sleepHours hours',
+                            Text('$_sleepHours',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 25),
+                                     fontSize: 25),
+                                textAlign: TextAlign.left),
+                            Text(' hours',
+                                style: TextStyle(
+                                    fontSize: 20),
                                 textAlign: TextAlign.left),
 
                           ],
@@ -227,7 +237,7 @@ class _MyHealthPageState extends State<MyHealthPage> {
                         Icon(
                           CustomIcons.heart,
                           size: 25,
-                          color: Colors.black,
+                          color: Colors.red,
                         ),
                         SizedBox(width: 10,height: 40,),
                         Text('Blood Presure',
@@ -241,9 +251,56 @@ class _MyHealthPageState extends State<MyHealthPage> {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            Text('$_sleepHours hours',
+                            Text('$_bloodPreasure',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 25),
+                                textAlign: TextAlign.left),
+                            Text(' mmHg',
+                                style: TextStyle(
+                                    fontSize: 20),
+                                textAlign: TextAlign.left),
+                          ],
+                        ),
+
+                      ],
+                    )
+
+                  ],
+                ),
+              ),
+            ),
+            Card(
+              elevation: 2.0,
+              child: Container(
+                padding: EdgeInsets.all(10.0),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          CustomIcons.droplet,
+                          size: 25,
+                          color: Colors.redAccent,
+                        ),
+                        SizedBox(width: 10,height: 40,),
+                        Text('Blood glucose',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                            textAlign: TextAlign.left)
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text('$_bloodGlucoes',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 25),
+                                textAlign: TextAlign.left),
+                            Text(' mg/dl',
+                                style: TextStyle(
+                                    fontSize: 20),
                                 textAlign: TextAlign.left),
 
                           ],
@@ -265,12 +322,12 @@ class _MyHealthPageState extends State<MyHealthPage> {
                     Row(
                       children: <Widget>[
                         Icon(
-                          CustomIcons.bed,
+                          CustomIcons.gauge,
                           size: 25,
-                          color: Colors.black,
+                          color: Colors.amber,
                         ),
                         SizedBox(width: 10,height: 40,),
-                        Text('Sleep Time',
+                        Text('Weight',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                             textAlign: TextAlign.left)
@@ -281,9 +338,13 @@ class _MyHealthPageState extends State<MyHealthPage> {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            Text('$_sleepHours hours',
+                            Text('$_weight',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 25),
+                                textAlign: TextAlign.left),
+                            Text(' kg',
+                                style: TextStyle(
+                                     fontSize: 25),
                                 textAlign: TextAlign.left),
 
                           ],
@@ -305,12 +366,12 @@ class _MyHealthPageState extends State<MyHealthPage> {
                     Row(
                       children: <Widget>[
                         Icon(
-                          CustomIcons.bed,
+                          CustomIcons.ruler,
                           size: 25,
-                          color: Colors.black,
+                          color: Colors.indigo,
                         ),
                         SizedBox(width: 10,height: 40,),
-                        Text('Sleep Time',
+                        Text('Height',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 16),
                             textAlign: TextAlign.left)
@@ -321,13 +382,66 @@ class _MyHealthPageState extends State<MyHealthPage> {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            Text('$_sleepHours hours',
+                            Text('$_height',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 25),
+                                textAlign: TextAlign.left),
+                            Text(' cm',
+                                style: TextStyle(
+                                    fontSize: 25),
                                 textAlign: TextAlign.left),
 
                           ],
                         ),
+
+                      ],
+                    )
+
+                  ],
+                ),
+              ),
+            ),
+            Card(
+              elevation: 2.0,
+              child: Container(
+                padding: EdgeInsets.all(10.0),
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Icon(
+                          CustomIcons.gauge,
+                          size: 25,
+                          color: Colors.amber,
+                        ),
+                        SizedBox(width: 10,height: 40,),
+                        Text('BMI',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                            textAlign: TextAlign.left)
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          children: <Widget>[
+                            Text('$_bmi',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 25),
+                                textAlign: TextAlign.left),
+                            Text(' kg/m2',
+                                style: TextStyle(
+                                    fontSize: 20),
+                                textAlign: TextAlign.left),
+
+                          ],
+                        ),
+                        Text('Normal',
+                            style: TextStyle(
+                               fontWeight: FontWeight.bold, fontSize: 20),
+                            textAlign: TextAlign.left),
+
 
                       ],
                     )
