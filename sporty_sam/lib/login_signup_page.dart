@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sporty_sam/services/authentication.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginSignupPage extends StatefulWidget {
   LoginSignupPage({this.auth, this.loginCallback});
@@ -18,7 +19,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   String _password;
   String _errorMessage;
 
-    bool _isLoginForm;
+  bool _isLoginForm;
   bool _isLoading;
 
   // Check if form is valid before perform login or signup
@@ -90,15 +91,15 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Flutter login demo'),
-        ),
+//        appBar: new AppBar(
+//          title: new Text('Flutter login demo'),
+//        ),
         body: Stack(
-          children: <Widget>[
-            _showForm(),
-            _showCircularProgress(),
-          ],
-        ));
+      children: <Widget>[
+        _showForm(),
+        _showCircularProgress(),
+      ],
+    ));
   }
 
   Widget _showCircularProgress() {
@@ -142,6 +143,26 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           child: new ListView(
             shrinkWrap: true,
             children: <Widget>[
+              SizedBox(
+                height: 40,
+              ),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                    text: 'Sporty Sam\n',
+                    style: GoogleFonts.portLligatSans(
+                      textStyle: Theme.of(context).textTheme.display1,
+                      fontSize: 40,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.indigo,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: 'Keep Moving and Save Sam',
+                        style: TextStyle(color: Colors.black, fontSize: 25),
+                      )
+                    ]),
+              ),
               showLogo(),
               showEmailInput(),
               showPasswordInput(),
@@ -174,11 +195,12 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     return new Hero(
       tag: 'hero',
       child: Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 40.0, 0.0, 0.0),
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
           radius: 48.0,
-          child: Image(image: AssetImage('lib/assets/logImage.png'),
+          child: Image(
+            image: AssetImage('lib/assets/logImage.png'),
             height: 100,
             width: 100,
           ),
@@ -189,7 +211,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   Widget showEmailInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
+      padding: const EdgeInsets.fromLTRB(0.0, 50.0, 0.0, 0.0),
       child: new TextFormField(
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,

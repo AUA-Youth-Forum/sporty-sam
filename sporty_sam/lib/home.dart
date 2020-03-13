@@ -10,6 +10,7 @@ import 'myHealth.dart';
 import 'challenge.dart';
 import 'myProfile.dart';
 
+
 import 'package:sporty_sam/services/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -134,11 +135,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 //style: Theme.of(context).textTheme.display1,
 
               ),
-              FlatButton(
-                  child: new Text('Logout',
-                      style:
-                          new TextStyle(fontSize: 25.0, color: Colors.black)),
-                  onPressed: signOut),
+
               SizedBox(
                 height: 20,
               ),
@@ -185,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SettingsPage()));
+                            builder: (context) => SettingsPage(auth: widget.auth,logoutCallback: widget.logoutCallback,userId: widget.userId,)));
                   },
                   iconSize: 48.0,
                   color: Colors.black),

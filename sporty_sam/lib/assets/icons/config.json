@@ -35,6 +35,30 @@
       "css": "ruler",
       "code": 61508,
       "src": "mfglabs"
+    },
+    {
+      "uid": "10b2be8b48bebc1974d6f94bac9de71d",
+      "css": "female",
+      "code": 59395,
+      "src": "mfglabs"
+    },
+    {
+      "uid": "23c2239369a69f752e790de95123b9e9",
+      "css": "male",
+      "code": 59396,
+      "src": "mfglabs"
+    },
+    {
+      "uid": "ca2d64f8a3ea7cbf6af45898b2dcf35e",
+      "css": "male-1",
+      "code": 61827,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "9bf7e14698cccdca37a6f1a02cf7d79e",
+      "css": "female-1",
+      "code": 61826,
+      "src": "fontawesome"
     }
   ]
 }
