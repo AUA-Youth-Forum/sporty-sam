@@ -127,12 +127,13 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               Text(
                 widget.userId,
-                style: Theme.of(context).textTheme.display1,
+                //style: Theme.of(context).textTheme.display1,
+                
               ),
               FlatButton(
                   child: new Text('Logout',
                       style:
-                          new TextStyle(fontSize: 17.0, color: Colors.black)),
+                          new TextStyle(fontSize: 25.0, color: Colors.black)),
                   onPressed: signOut),
               SizedBox(
                 height: 20,
