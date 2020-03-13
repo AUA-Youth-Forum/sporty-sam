@@ -8,11 +8,15 @@ import './settings.dart';
 import 'dietTracker.dart';
 import 'myHealth.dart';
 import 'challenge.dart';
+import 'myProfile.dart';
 
 import 'package:sporty_sam/services/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'dart:async';
+
+import 'myProfile.dart';
+
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.auth, this.userId, this.logoutCallback})
@@ -122,17 +126,18 @@ class _MyHomePageState extends State<MyHomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                'Sam',
+                'Welcome to Sporty Sam',
                 style: Theme.of(context).textTheme.display1,
               ),
               Text(
                 widget.userId,
-                style: Theme.of(context).textTheme.display1,
+                //style: Theme.of(context).textTheme.display1,
+
               ),
               FlatButton(
                   child: new Text('Logout',
                       style:
-                          new TextStyle(fontSize: 17.0, color: Colors.black)),
+                          new TextStyle(fontSize: 25.0, color: Colors.black)),
                   onPressed: signOut),
               SizedBox(
                 height: 20,
@@ -196,7 +201,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.black),
               IconButton(
                   icon: Icon(Icons.face),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfPage()));
+                  },
                   iconSize: 48.0,
                   color: Colors.black),
               IconButton(
