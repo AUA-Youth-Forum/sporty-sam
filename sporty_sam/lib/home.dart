@@ -230,7 +230,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   iconSize: 48.0,
                   color: Colors.black),
               IconButton(
-                  icon: Icon(Icons.info),
+                  icon: Icon(Icons.network_check),
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => HealthTips()));
