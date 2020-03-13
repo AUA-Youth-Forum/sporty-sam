@@ -12,7 +12,6 @@ import 'challenge.dart';
 import 'package:sporty_sam/services/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
 
-
 import 'dart:async';
 
 class MyHomePage extends StatefulWidget {
@@ -27,10 +26,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-
 
   signOut() async {
     try {
@@ -40,15 +36,15 @@ class _MyHomePageState extends State<MyHomePage> {
       print(e);
     }
   }
+
   //bool _isEmailVerified = false;
   @override
   void initState() {
     super.initState();
 
     //_checkEmailVerification();
-
-
   }
+
   //  void _checkEmailVerification() async {
 //    _isEmailVerified = await widget.auth.isEmailVerified();
 //    if (!_isEmailVerified) {
@@ -121,7 +117,6 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -131,14 +126,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: Theme.of(context).textTheme.display1,
               ),
               Text(
-               widget.userId,
+                widget.userId,
                 style: Theme.of(context).textTheme.display1,
               ),
               FlatButton(
                   child: new Text('Logout',
-                      style: new TextStyle(fontSize: 17.0, color: Colors.black )),
+                      style:
+                          new TextStyle(fontSize: 17.0, color: Colors.black)),
                   onPressed: signOut),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               InkWell(
                 child: Container(
                   height: 300,
@@ -179,16 +177,20 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icon(Icons.settings),
                   onPressed: () {
                     controller.isOpen = false;
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SettingsPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SettingsPage()));
                   },
                   iconSize: 48.0,
                   color: Colors.black),
               IconButton(
                   icon: Icon(Icons.fastfood),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => DietTrackerPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DietTrackerPage()));
                   },
                   iconSize: 48.0,
                   color: Colors.black),
@@ -200,16 +202,20 @@ class _MyHomePageState extends State<MyHomePage> {
               IconButton(
                   icon: Icon(Icons.directions_run),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MyHealthPage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MyHealthPage()));
                   },
                   iconSize: 48.0,
                   color: Colors.black),
               IconButton(
                   icon: Icon(Icons.videogame_asset),
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => ChallengePage()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ChallengePage()));
                   },
                   iconSize: 48.0,
                   color: Colors.black),
