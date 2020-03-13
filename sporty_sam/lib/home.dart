@@ -8,11 +8,15 @@ import './settings.dart';
 import 'dietTracker.dart';
 import 'myHealth.dart';
 import 'challenge.dart';
+import 'myProfile.dart';
 
 import 'package:sporty_sam/services/authentication.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'dart:async';
+
+import 'myProfile.dart';
+
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.auth, this.userId, this.logoutCallback})
@@ -197,7 +201,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   color: Colors.black),
               IconButton(
                   icon: Icon(Icons.face),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfPage()));
+                  },
                   iconSize: 48.0,
                   color: Colors.black),
               IconButton(

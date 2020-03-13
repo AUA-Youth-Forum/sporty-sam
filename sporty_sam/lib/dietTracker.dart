@@ -24,6 +24,8 @@ class _DietTrackerPageState extends State<DietTrackerPage> {
               children: <Widget>[
 
               ],
-            )));
+            )
+        )
+    );
   }
 }
