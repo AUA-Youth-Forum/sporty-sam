@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 List tips = [
   [
@@ -22,20 +25,39 @@ List tips = [
 
 class HealthTips extends StatefulWidget {
 
+
   @override
   _HealthTipsState createState() => _HealthTipsState();
 }
 
 class _HealthTipsState extends State<HealthTips> {
-  final databaseReference = Firestore.instance;
-  void getData() {
-    databaseReference
-        .collection("health tips")
-        .getDocuments()
-        .then((QuerySnapshot snapshot) {
-      snapshot.documents.forEach((f) => print('${f.data}}'));
+  Uint8List imageFile;
+  StorageReference cardImgReference= FirebaseStorage.instance.ref().child("healthtips");
+  
+  Widget getImage(String imgName){
+    const int MAXSIZE =  4*1024*1024;
+    cardImgReference.child(imgName).getData(MAXSIZE).then((data){
+      imageFile=data;
+      print(imgName);
+//      this.setState((){
+//        imageFile=data;
+//      });
+    }).catchError((error){
+
     });
+    return Image.memory(imageFile,width: 150,height: 150,);
   }
+
+
+  //final databaseReference = Firestore.instance;
+//  void getData() {
+//    databaseReference
+//        .collection("health tips")
+//        .getDocuments()
+//        .then((QuerySnapshot snapshot) {
+//      snapshot.documents.forEach((f) => print('${f.data}}'));
+//    });
+//  }
   //
   /////////////////////////////////////////////////
 // old local system cards
@@ -94,6 +116,7 @@ class _HealthTipsState extends State<HealthTips> {
               case ConnectionState.waiting:
                 return new Text('Loading...');
               default:
+
                 return new ListView(
                   children:
                       snapshot.data.documents.map((DocumentSnapshot document) {
@@ -101,14 +124,14 @@ class _HealthTipsState extends State<HealthTips> {
                       elevation: 3.0,
                       child: Row(
                         children: <Widget>[
-                          
                           Container(
                             padding: EdgeInsets.all(10.0),
-                            child: Image(
-                              image: AssetImage(document['img']),
-                              width: 150,
-                              height: 150,
-                            ),
+                            child: getImage(document['ImgName'])
+//                            Image(
+//                              image: AssetImage(document['img']),
+//                              width: 150,
+//                              height: 150,
+//                            ),
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width - 200,
