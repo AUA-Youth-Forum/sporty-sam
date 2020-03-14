@@ -5,6 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+Map<int, Uint8List> imageFile = {};
+List<int> requestedIndexes = [];
+
 List tips = [
   [
     'Eat a variety of foods',
@@ -24,30 +27,41 @@ List tips = [
 ];
 
 class HealthTips extends StatefulWidget {
-
-
   @override
   _HealthTipsState createState() => _HealthTipsState();
 }
 
 class _HealthTipsState extends State<HealthTips> {
   Uint8List imageFile;
-  StorageReference cardImgReference= FirebaseStorage.instance.ref().child("healthtips");
-  
-  Widget getImage(String imgName){
-    const int MAXSIZE =  4*1024*1024;
-    cardImgReference.child(imgName).getData(MAXSIZE).then((data){
-      imageFile=data;
-      print(imgName);
-//      this.setState((){
-//        imageFile=data;
-//      });
-    }).catchError((error){
+  StorageReference cardImgReference =
+  FirebaseStorage.instance.ref().child("healthtips");
+  Widget getImage(int imgName) {
 
+    const int MAXSIZE = 4 * 1024 * 1024;
+    cardImgReference.child('${imgName}.jpg').getData(MAXSIZE).then((data) {
+      imageFile = data;
+      print(imgName);
+//      this.setState(() {
+//        imageFile = data;
+//      });
+    }).catchError((error) {
+      print(error);
     });
-    return Image.memory(imageFile,width: 150,height: 150,);
+    if (imageFile == null) {
+      return new Text('no data');
+    } else {
+    return new Image.memory(
+      imageFile,
+      width: 150,
+      height: 150,
+    );
+    }
   }
 
+  Widget foobar() {
+    print("abc");
+    return Text('x');
+  }
 
   //final databaseReference = Firestore.instance;
 //  void getData() {
@@ -61,48 +75,48 @@ class _HealthTipsState extends State<HealthTips> {
   //
   /////////////////////////////////////////////////
 // old local system cards
-  Widget _tipsContent(int index) {
-    return Container(
-      height: 200,
-      child: Card(
-        elevation: 3.0,
-        child: Row(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(10.0),
-              child: Image(
-                image: AssetImage(tips[index][1]),
-                width: 150,
-                height: 150,
-              ),
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width - 200,
-              height: 150,
-              padding: EdgeInsets.all(10.0),
-              child: Column(
-                children: <Widget>[
-                  Text(tips[index][0],
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
-                      textAlign: TextAlign.left),
-                  Flexible(
-                    child: Text(
-                      tips[index][2],
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                      textAlign: TextAlign.justify,
-                      //overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+//  Widget _tipsContent(int index) {
+//    return Container(
+//      height: 200,
+//      child: Card(
+//        elevation: 3.0,
+//        child: Row(
+//          children: <Widget>[
+//            Container(
+//              padding: EdgeInsets.all(10.0),
+//              child: Image(
+//                image: AssetImage(tips[index][1]),
+//                width: 150,
+//                height: 150,
+//              ),
+//            ),
+//            Container(
+//              width: MediaQuery.of(context).size.width - 200,
+//              height: 150,
+//              padding: EdgeInsets.all(10.0),
+//              child: Column(
+//                children: <Widget>[
+//                  Text(tips[index][0],
+//                      style:
+//                          TextStyle(fontWeight: FontWeight.bold, fontSize: 23),
+//                      textAlign: TextAlign.left),
+//                  Flexible(
+//                    child: Text(
+//                      tips[index][2],
+//                      style:
+//                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+//                      textAlign: TextAlign.justify,
+//                      //overflow: TextOverflow.ellipsis,
+//                    ),
+//                  ),
+//                ],
+//              ),
+//            )
+//          ],
+//        ),
+//      ),
+//    );
+//  }
 ////////////////////////////////////////////////
 
   Widget _tipsFirebase() {
@@ -110,13 +124,13 @@ class _HealthTipsState extends State<HealthTips> {
       child: Container(
         child: StreamBuilder<QuerySnapshot>(
           stream: Firestore.instance.collection('health tips').snapshots(),
-          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          builder:
+              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
             switch (snapshot.connectionState) {
               case ConnectionState.waiting:
                 return new Text('Loading...');
               default:
-
                 return new ListView(
                   children:
                       snapshot.data.documents.map((DocumentSnapshot document) {
@@ -124,14 +138,17 @@ class _HealthTipsState extends State<HealthTips> {
                       elevation: 3.0,
                       child: Row(
                         children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(10.0),
-                            child: getImage(document['ImgName'])
+                         new Container(
+                              padding: EdgeInsets.all(10.0),
+                              child: getImage(document['ImgName'])
 //                            Image(
 //                              image: AssetImage(document['img']),
 //                              width: 150,
 //                              height: 150,
 //                            ),
+                              ),
+                          Container(
+                            child: foobar(),
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width - 200,
@@ -172,10 +189,10 @@ class _HealthTipsState extends State<HealthTips> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Health tips'),
-      ),
-      body: _tipsFirebase()
+        appBar: AppBar(
+          title: Text('Health tips'),
+        ),
+        body: _tipsFirebase()
 
 ////old local system
 //        SingleChildScrollView(
@@ -194,6 +211,6 @@ class _HealthTipsState extends State<HealthTips> {
 ////            _tipsContent(0),
 //          ],
 //        ))
-    );
+        );
   }
 }
