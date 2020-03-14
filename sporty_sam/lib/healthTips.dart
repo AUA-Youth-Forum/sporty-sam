@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 List tips = [
   [
@@ -20,15 +21,24 @@ List tips = [
 ];
 
 class HealthTips extends StatefulWidget {
-//  HealthTips({Key key, this.title}) : super(key: key);
-//
-//  final String title;
 
   @override
   _HealthTipsState createState() => _HealthTipsState();
 }
 
 class _HealthTipsState extends State<HealthTips> {
+  final databaseReference = Firestore.instance;
+  void getData() {
+    databaseReference
+        .collection("health tips")
+        .getDocuments()
+        .then((QuerySnapshot snapshot) {
+      snapshot.documents.forEach((f) => print('${f.data}}'));
+    });
+  }
+  //
+  /////////////////////////////////////////////////
+// old local system cards
   Widget _tipsContent(int index) {
     return Container(
       height: 200,
@@ -71,22 +81,96 @@ class _HealthTipsState extends State<HealthTips> {
       ),
     );
   }
+////////////////////////////////////////////////
+
+  Widget _tipsFirebase() {
+    return Center(
+      child: Container(
+        child: StreamBuilder<QuerySnapshot>(
+          stream: Firestore.instance.collection('health tips').snapshots(),
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) return new Text('Error: ${snapshot.error}');
+            switch (snapshot.connectionState) {
+              case ConnectionState.waiting:
+                return new Text('Loading...');
+              default:
+                return new ListView(
+                  children:
+                      snapshot.data.documents.map((DocumentSnapshot document) {
+                    return new Card(
+                      elevation: 3.0,
+                      child: Row(
+                        children: <Widget>[
+                          
+                          Container(
+                            padding: EdgeInsets.all(10.0),
+                            child: Image(
+                              image: AssetImage(document['img']),
+                              width: 150,
+                              height: 150,
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width - 200,
+                            height: 150,
+                            padding: EdgeInsets.all(10.0),
+                            child: Column(
+                              children: <Widget>[
+                                Text(document['title'],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 23),
+                                    textAlign: TextAlign.left),
+                                Flexible(
+                                  child: Text(
+                                    document['content'],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                    textAlign: TextAlign.justify,
+                                    //overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  }).toList(),
+                );
+            }
+          },
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Health tips'),
-        ),
-        body: SingleChildScrollView(
-            child: Column(
-          children: <Widget>[
+      appBar: AppBar(
+        title: Text('Health tips'),
+      ),
+      body: _tipsFirebase()
 
-            _tipsContent(0),
-            _tipsContent(1),
-            _tipsContent(2),
-            _tipsContent(0),
-          ],
-        )));
+////old local system
+//        SingleChildScrollView(
+//            child: Column(
+//          children: <Widget>[
+//            RaisedButton(
+//              child: Text('View Record'),
+//              onPressed: () {
+//                getData();
+//              },
+//            ),
+//
+//            _tipsContent(0),
+////            _tipsContent(1),
+////            _tipsContent(2),
+////            _tipsContent(0),
+//          ],
+//        ))
+    );
   }
 }

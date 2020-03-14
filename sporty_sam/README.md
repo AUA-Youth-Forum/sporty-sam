@@ -19,3 +19,5 @@ ref
 https://github.com/zmqgithub/circular_progress
 https://enappd.com/blog/building-a-flutter-datetime-picker/55/
 https://medium.com/flutterpub/flutter-how-to-do-user-login-with-firebase-a6af760b14d5
+https://medium.com/@atul.sharma_94062/how-to-use-cloud-firestore-with-flutter-e6f9e8821b27
+https://heartbeat.fritz.ai/using-firebases-cloud-firestore-in-flutter-79a79ec5303a
