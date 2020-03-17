@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import 'loadimg.dart';
+
 Map<int, Uint8List> imageFile = {};
 List<int> requestedIndexes = [];
 
@@ -32,31 +34,7 @@ class HealthTips extends StatefulWidget {
 }
 
 class _HealthTipsState extends State<HealthTips> {
-  Uint8List imageFile;
-  StorageReference cardImgReference =
-  FirebaseStorage.instance.ref().child("healthtips");
-  Widget getImage(int imgName) {
 
-    const int MAXSIZE = 4 * 1024 * 1024;
-    cardImgReference.child('${imgName}.jpg').getData(MAXSIZE).then((data) {
-      imageFile = data;
-      print(imgName);
-//      this.setState(() {
-//        imageFile = data;
-//      });
-    }).catchError((error) {
-      print(error);
-    });
-    if (imageFile == null) {
-      return new Text('no data');
-    } else {
-    return new Image.memory(
-      imageFile,
-      width: 150,
-      height: 150,
-    );
-    }
-  }
 
   Widget foobar() {
     print("abc");
@@ -138,9 +116,9 @@ class _HealthTipsState extends State<HealthTips> {
                       elevation: 3.0,
                       child: Row(
                         children: <Widget>[
-                         new Container(
+                         Container(
                               padding: EdgeInsets.all(10.0),
-                              child: getImage(document['ImgName'])
+                              child: LoadImg(fileName: document['ImgName'],)
 //                            Image(
 //                              image: AssetImage(document['img']),
 //                              width: 150,
