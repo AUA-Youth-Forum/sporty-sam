@@ -1,32 +1,28 @@
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
-import 'loadimg.dart';
+import 'const/loadimg.dart';
 
-Map<int, Uint8List> imageFile = {};
-List<int> requestedIndexes = [];
-
-List tips = [
-  [
-    'Eat a variety of foods',
-    'lib/assets/tips/food.jpg',
-    'For good health, we need more than 40 different nutrients, and no single food can supply them all. It is not about a single meal, it is about a balanced food choice over time that will make a difference!'
-  ],
-  [
-    'Get on the move, make it a habit',
-    'lib/assets/tips/workout.jpg',
-    'Physical activity is important for people of all weight ranges and health conditions. It helps us burn off the extra calories, it is good for the heart and circulatory system, it maintains or increases our muscle mass, it helps us focus, and improves overall health well-being.'
-  ],
-  [
-    'Drink plenty of fluids',
-    'lib/assets/tips/water.jpg',
-    'Adults need to drink at least 1.5 litres of fluid a day! Or more if it\'s very hot or they are physically active. Water is the best source, of course, and we can use tap or mineral water, sparkling or non-sparkling, plain or flavoured.'
-  ],
-];
+//old system
+//List tips = [
+//  [
+//    'Eat a variety of foods',
+//    'lib/assets/tips/food.jpg',
+//    'For good health, we need more than 40 different nutrients, and no single food can supply them all. It is not about a single meal, it is about a balanced food choice over time that will make a difference!'
+//  ],
+//  [
+//    'Get on the move, make it a habit',
+//    'lib/assets/tips/workout.jpg',
+//    'Physical activity is important for people of all weight ranges and health conditions. It helps us burn off the extra calories, it is good for the heart and circulatory system, it maintains or increases our muscle mass, it helps us focus, and improves overall health well-being.'
+//  ],
+//  [
+//    'Drink plenty of fluids',
+//    'lib/assets/tips/water.jpg',
+//    'Adults need to drink at least 1.5 litres of fluid a day! Or more if it\'s very hot or they are physically active. Water is the best source, of course, and we can use tap or mineral water, sparkling or non-sparkling, plain or flavoured.'
+//  ],
+//];
 
 class HealthTips extends StatefulWidget {
   @override
@@ -34,13 +30,6 @@ class HealthTips extends StatefulWidget {
 }
 
 class _HealthTipsState extends State<HealthTips> {
-
-
-  Widget foobar() {
-    print("abc");
-    return Text('x');
-  }
-
   //final databaseReference = Firestore.instance;
 //  void getData() {
 //    databaseReference
@@ -116,18 +105,11 @@ class _HealthTipsState extends State<HealthTips> {
                       elevation: 3.0,
                       child: Row(
                         children: <Widget>[
-                         Container(
-                              padding: EdgeInsets.all(10.0),
-                              child: LoadImg(fileName: document['ImgName'],)
-//                            Image(
-//                              image: AssetImage(document['img']),
-//                              width: 150,
-//                              height: 150,
-//                            ),
-                              ),
                           Container(
-                            child: foobar(),
-                          ),
+                              padding: EdgeInsets.all(10.0),
+                              child: LoadImg(
+                                fileName: document['ImgName'],
+                              )),
                           Container(
                             width: MediaQuery.of(context).size.width - 200,
                             height: 150,

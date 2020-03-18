@@ -1,8 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -56,7 +55,7 @@ class _LoadImg extends State<LoadImg> {
   Widget build(BuildContext context) {
     print('zzzz');
 
-    const int MAXSIZE = 4 * 1024 * 1024;
+    //const int MAXSIZE = 4 * 1024 * 1024;
     if (imgUrl == null) {
       cardImgReference
           .child('${widget.fileName}.jpg')
