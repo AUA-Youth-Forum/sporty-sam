@@ -30,11 +30,15 @@ import 'package:flutter/widgets.dart';
 class CustomIcons {
   CustomIcons._();
 
-  static const _kFontFam = 'MyFlutterApp';
+  static const _kFontFam = 'CustomIcons';
 
   static const IconData heart = IconData(0xe800, fontFamily: _kFontFam);
   static const IconData gauge = IconData(0xe801, fontFamily: _kFontFam);
   static const IconData droplet = IconData(0xe802, fontFamily: _kFontFam);
+  static const IconData female = IconData(0xe803, fontFamily: _kFontFam);
+  static const IconData male = IconData(0xe804, fontFamily: _kFontFam);
   static const IconData ruler = IconData(0xf044, fontFamily: _kFontFam);
+  static const IconData female_1 = IconData(0xf182, fontFamily: _kFontFam);
+  static const IconData male_1 = IconData(0xf183, fontFamily: _kFontFam);
   static const IconData bed = IconData(0xf236, fontFamily: _kFontFam);
 }
