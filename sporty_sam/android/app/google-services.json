@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "881783129094",
+    "firebase_url": "https://sporty-sam.firebaseio.com",
+    "project_id": "sporty-sam",
+    "storage_bucket": "sporty-sam.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881783129094:android:a8e701b28817589ca9ef87",
+        "android_client_info": {
+          "package_name": "com.blogspot.georgeraveen.sporty_sam"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "881783129094-thuockm5bhvi3f7j4lbpmlj5jn053eat.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2fAZS-yGtW_I11_jrRrzrcnlsKnCRPHA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "881783129094-thuockm5bhvi3f7j4lbpmlj5jn053eat.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

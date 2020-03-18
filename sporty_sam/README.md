@@ -14,3 +14,10 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+ref
+https://github.com/zmqgithub/circular_progress
+https://enappd.com/blog/building-a-flutter-datetime-picker/55/
+https://medium.com/flutterpub/flutter-how-to-do-user-login-with-firebase-a6af760b14d5
+https://medium.com/@atul.sharma_94062/how-to-use-cloud-firestore-with-flutter-e6f9e8821b27
+https://heartbeat.fritz.ai/using-firebases-cloud-firestore-in-flutter-79a79ec5303a
