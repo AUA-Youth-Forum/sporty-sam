@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import './assets/icons/my_flutter_app_icons.dart';
+import './assets/icons/custom_icons_icons.dart';
 import 'package:sporty_sam/services/authentication.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_country_picker/flutter_country_picker.dart';
+import './const/beauty_textfield.dart';
 
 class SettingsPage extends StatefulWidget {
   SettingsPage({Key key, this.auth, this.userId, this.logoutCallback})
@@ -16,6 +20,11 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  //default settings
+  String gender = 'Male';
+  Country _selectedCountry = Country.LK;
+  DateTime _birthday = DateTime.now();
+
   signOut() async {
     try {
       await widget.auth.signOut();
@@ -54,30 +63,63 @@ class _SettingsPageState extends State<SettingsPage> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)),
                     color: Colors.deepOrangeAccent,
-                    child: ListTile(
-                      onTap: () {
-                        //open edit profile
-                      },
-                      title: Text(
-                        "John",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
+                    child: BeautyTextfield(
+                      width: double.maxFinite,
+                      height: 60,
+                      duration: Duration(milliseconds: 300),
+                      inputType: TextInputType.text,
+                      prefixIcon: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: AssetImage('lib/assets/tips/food.jpg'),
+                            )
+                          ),
+
                         ),
                       ),
-                      leading: CircleAvatar(
-                          //backgroundImage: CachedNetworkImageProvider(avatars[0]),
-                          ),
-                      trailing: Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                      ),
+                      suffixIcon: Icon(Icons.remove_red_eye),
+                      placeholder: "With Suffic Icon",
+                      onTap: () {
+                        print('Click');
+                      },
+                      onChanged: (text) {
+                        print(text);
+                      },
+                      onSubmitted: (data) {
+                        print(data.length);
+                      },
                     ),
+//                    ListTile(
+//                      onTap: () {
+//                        //open edit profile
+//                      },
+//                      title: Text(
+//                        "John",
+//                        style: TextStyle(
+//                          color: Colors.white,
+//                          fontWeight: FontWeight.w500,
+//                        ),
+//                      ),
+//                      leading: CircleAvatar(
+//                          //backgroundImage: CachedNetworkImageProvider(avatars[0]),
+//                          ),
+//                      trailing: Icon(
+//                        Icons.edit,
+//                        color: Colors.white,
+//                      ),
+//                    ),
                   ),
                   const SizedBox(height: 10.0),
                   Card(
                     elevation: 4.0,
-                    margin: const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 16.0),
+                    margin: const EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 16.0),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10.0)),
                     child: Column(
@@ -99,7 +141,27 @@ class _SettingsPageState extends State<SettingsPage> {
                             Icons.location_on,
                             color: Colors.deepOrangeAccent,
                           ),
-                          title: Text("Change Location"),
+                          title: Row(
+                            children: <Widget>[
+                              CountryPicker(
+                                dense: false,
+                                showFlag: true, //displays flag, true by default
+                                showDialingCode:
+                                    false, //displays dialing code, false by default
+                                showName:
+                                    true, //displays country name, true by default
+                                showCurrency: false, //eg. 'British pound'
+                                showCurrencyISO: false, //eg. 'GBP'
+                                onChanged: (Country country) {
+                                  setState(() {
+                                    _selectedCountry = country;
+                                    print(_selectedCountry.name);
+                                  });
+                                },
+                                selectedCountry: _selectedCountry,
+                              ),
+                            ],
+                          ),
                           trailing: Icon(Icons.keyboard_arrow_right),
                           onTap: () {
                             //open change location
@@ -111,7 +173,42 @@ class _SettingsPageState extends State<SettingsPage> {
                             CustomIcons.male,
                             color: Colors.deepOrangeAccent,
                           ),
-                          title: Text("Change gender"),
+                          title: Row(
+                            children: <Widget>[
+                              Text("Gender : "),
+                              DropdownButton<String>(
+                                value: gender,
+                                icon: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    SizedBox(
+                                      width: 40,
+                                    ),
+                                    Icon(Icons.edit),
+                                  ],
+                                ),
+                                elevation: 16,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 16),
+                                onChanged: (String newValue) {
+                                  setState(() {
+                                    gender = newValue;
+                                  });
+                                },
+                                items: <String>[
+                                  'Male',
+                                  'Female',
+                                  'Other'
+                                ].map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
+                          ),
                           trailing: Icon(Icons.keyboard_arrow_right),
                           onTap: () {
                             //open change language
@@ -123,25 +220,47 @@ class _SettingsPageState extends State<SettingsPage> {
                             Icons.calendar_today,
                             color: Colors.deepOrangeAccent,
                           ),
-                          title: Text("Change Birthday"),
+                          title: Text(
+                              'Birthday : ${_birthday.day}/${_birthday.month}/${_birthday.year} '),
                           trailing: Icon(Icons.keyboard_arrow_right),
                           onTap: () {
-                            //open change language
+                            DatePicker.showDatePicker(context,
+                                theme: DatePickerTheme(
+                                  containerHeight: 210.0,
+                                ),
+                                showTitleActions: true,
+                                minTime: DateTime(2000, 1, 1),
+                                //maxTime: DateTime(2022, 12, 31),
+                                onConfirm: (date) {
+                              print('confirm $date');
+
+                              setState(() {
+                                _birthday = date;
+                              });
+                            }, currentTime: _birthday, locale: LocaleType.en);
                           },
                         ),
                         _buildDivider(),
                         ListTile(
-                          leading: Icon(
-                            Icons.power_settings_new,
-                            color: Colors.deepOrangeAccent,
-                          ),
-                          title: Text("Logout"),
-                          trailing: Icon(Icons.keyboard_arrow_right),
-                          onTap: signOut
-                        ),
+                            leading: Icon(
+                              Icons.power_settings_new,
+                              color: Colors.deepOrangeAccent,
+                            ),
+                            title: Text("Logout"),
+                            trailing: Icon(Icons.keyboard_arrow_right),
+                            onTap: signOut),
                       ],
                     ),
                   ),
+                  const SizedBox(height: 20.0),
+                  SwitchListTile(
+                    activeColor: Colors.deepOrangeAccent,
+                    contentPadding: const EdgeInsets.all(0),
+                    value: true,
+                    title: Text("Pubilc Visibility"),
+                    onChanged: (val) {},
+                  ),
+                  _buildDivider(),
                   const SizedBox(height: 20.0),
                   Text(
                     "Notification Settings",
@@ -155,29 +274,14 @@ class _SettingsPageState extends State<SettingsPage> {
                     activeColor: Colors.deepOrangeAccent,
                     contentPadding: const EdgeInsets.all(0),
                     value: true,
-                    title: Text("Received notification"),
+                    title: Text("Receive notifications"),
                     onChanged: (val) {},
                   ),
-                  SwitchListTile(
-                    activeColor: Colors.deepOrangeAccent,
+                  _buildDivider(),
+                  const SizedBox(height: 20.0),
+                  ListTile(
                     contentPadding: const EdgeInsets.all(0),
-                    value: false,
-                    title: Text("Received newsletter"),
-                    onChanged: null,
-                  ),
-                  SwitchListTile(
-                    activeColor: Colors.deepOrangeAccent,
-                    contentPadding: const EdgeInsets.all(0),
-                    value: true,
-                    title: Text("Received Offer Notification"),
-                    onChanged: (val) {},
-                  ),
-                  SwitchListTile(
-                    activeColor: Colors.deepOrangeAccent,
-                    contentPadding: const EdgeInsets.all(0),
-                    value: true,
-                    title: Text("Received App Updates"),
-                    onChanged: null,
+                    title: Text("About us"),
                   ),
                 ],
               ),
