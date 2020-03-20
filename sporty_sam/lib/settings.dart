@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import './assets/icons/custom_icons_icons.dart';
@@ -22,7 +23,8 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   //default settings
   String gender = 'Male';
-  Country _selectedCountry = Country.LK;
+
+  Country _selectedCountry = Country.AD;
   DateTime _birthday = DateTime.now();
 
   signOut() async {
@@ -38,10 +40,21 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
+    print(widget.userId+'eryrhy');
+
+    Firestore.instance.collection("users").document(widget.userId).get().then((DocumentSnapshot userdetails){
+      setState(() {
+        _selectedCountry=Country.findByIsoCode(userdetails['country']);
+        gender=userdetails['gender'];
+      });
+    });
+//
+
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -84,8 +97,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
                         ),
                       ),
-                      suffixIcon: Icon(Icons.remove_red_eye),
-                      placeholder: "With Suffic Icon",
+                      suffixIcon: Icon(Icons.edit),
+                      placeholder: "John",
                       onTap: () {
                         print('Click');
                       },
