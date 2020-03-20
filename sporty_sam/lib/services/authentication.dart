@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_country_picker/flutter_country_picker.dart';
 
 abstract class BaseAuth {
   Future<String> signIn(String email, String password);
@@ -26,9 +28,20 @@ class Auth implements BaseAuth {
   }
 
   Future<String> signUp(String email, String password) async {
+    String defaultCountry = Country.LK.isoCode;
     AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
     FirebaseUser user = result.user;
+    //print("ccccccccccccccc " + user.uid);
+    Firestore.instance.collection("users").document(user.uid).setData({
+      "uid": user.uid,
+      "name": "My Name",
+      "email": email,
+      "gender": "Other",
+      "birthday": DateTime.now().toString(),
+      "country": defaultCountry
+    });
+    //print("dddddddddddddd");
     return user.uid;
   }
 
@@ -49,5 +62,14 @@ class Auth implements BaseAuth {
   Future<bool> isEmailVerified() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     return user.isEmailVerified;
+  }
+  Future<void> changePassword(String password) async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    user.updatePassword(password).then((_) {
+      print("Succesfull changed password");
+    }).catchError((error) {
+      print("Password can't be changed" + error.toString());
+    });
+    return null;
   }
 }
