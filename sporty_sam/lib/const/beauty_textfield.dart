@@ -39,7 +39,7 @@ class BeautyTextfield extends StatefulWidget {
         this.onClickSuffix,
         this.wordSpacing,
         this.textBaseline,
-        this.fontFamily,
+        this.fontFamily ,
         this.fontStyle,
         this.fontWeight,
         this.autofocus = false,
