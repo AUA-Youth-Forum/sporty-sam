@@ -20,7 +20,6 @@ abstract class BaseAuth {
 class Auth implements BaseAuth {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-
   Future<String> signIn(String email, String password) async {
     AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
@@ -29,20 +28,20 @@ class Auth implements BaseAuth {
   }
 
   Future<String> signUp(String email, String password) async {
-    String defaultCountry=Country.LK.isoCode;
+    String defaultCountry = Country.LK.isoCode;
     AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
     FirebaseUser user = result.user;
-    print("ccccccccccccccc "+user.uid);
+    //print("ccccccccccccccc " + user.uid);
     Firestore.instance.collection("users").document(user.uid).setData({
       "uid": user.uid,
       "name": "My Name",
       "email": email,
       "gender": "Other",
-      "birthday": DateTime.now(),
+      "birthday": DateTime.now().toString(),
       "country": defaultCountry
     });
-    print("dddddddddddddd");
+    //print("dddddddddddddd");
     return user.uid;
   }
 
@@ -63,5 +62,14 @@ class Auth implements BaseAuth {
   Future<bool> isEmailVerified() async {
     FirebaseUser user = await _firebaseAuth.currentUser();
     return user.isEmailVerified;
+  }
+  Future<void> changePassword(String password) async {
+    FirebaseUser user = await _firebaseAuth.currentUser();
+    user.updatePassword(password).then((_) {
+      print("Succesfull changed password");
+    }).catchError((error) {
+      print("Password can't be changed" + error.toString());
+    });
+    return null;
   }
 }
