@@ -10,7 +10,7 @@ import './const/beauty_textfield.dart';
 class SettingsPage extends StatefulWidget {
   SettingsPage({Key key, this.auth, this.userId, this.logoutCallback})
       : super(key: key);
-  static final String path = "lib/src/pages/settings/settings1.dart";
+
 
   final BaseAuth auth;
   final VoidCallback logoutCallback;
@@ -41,14 +41,6 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     print(widget.userId + 'eryrhy');
-
-//    Firestore.instance.collection("users").document(widget.userId).get().then((DocumentSnapshot userdetails){
-//      setState(() {
-//        _selectedCountry=Country.findByIsoCode(userdetails['country']);
-//        gender=userdetails['gender'];
-//      });
-//    });
-//
   }
 
   @override
