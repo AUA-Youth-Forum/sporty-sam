@@ -12,6 +12,7 @@ import 'myProfile.dart';
 
 
 import 'package:sporty_sam/services/authentication.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import 'dart:async';
@@ -41,12 +42,46 @@ class _MyHomePageState extends State<MyHomePage> {
       print(e);
     }
   }
-
+  DateTime dateOnly(DateTime oldDate) {
+    return DateTime(oldDate.year, oldDate.month, oldDate.day);
+  }
+  void setDatabaseDate() {
+    Firestore.instance
+        .collection('users')
+        .document(widget.userId)
+        .collection('healthHistory')
+        .document(dateOnly(DateTime.now()).toString())
+        .get()
+        .then((onValue) {
+      if (onValue.exists) {
+        print('heello');
+      } else {
+        print('bye beye');
+        Firestore.instance
+            .collection('users')
+            .document(widget.userId)
+            .collection('healthHistory')
+            .document(dateOnly(DateTime.now()).toString())
+            .setData({
+          "steps": 0,
+          "calIntake": 0,
+          "calBurn": 0,
+          "heartRate": 0,
+          "activeMin": 0,
+          "distance": 0,
+          "sleep": 0,
+          "glucose": 0,
+          "weight": 0,
+          "height": 0,
+        });
+      }
+    });
+  }
   //bool _isEmailVerified = false;
   @override
   void initState() {
     super.initState();
-
+  setDatabaseDate();
     //_checkEmailVerification();
   }
 

@@ -41,6 +41,7 @@ class Auth implements BaseAuth {
       "birthday": DateTime.now().toString(),
       "country": defaultCountry
     });
+
     //print("dddddddddddddd");
     return user.uid;
   }
