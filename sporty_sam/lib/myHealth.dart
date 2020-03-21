@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import './assets/icons/custom_icons_icons.dart';
 import 'dart:math';
+
 class MyHealthPage extends StatefulWidget {
   MyHealthPage({
     Key key,
@@ -16,7 +17,6 @@ class MyHealthPage extends StatefulWidget {
 
 class _MyHealthPageState extends State<MyHealthPage> {
   DateTime historyDate;
-
 
   DateTime dateOnly(DateTime oldDate) {
     return DateTime(oldDate.year, oldDate.month, oldDate.day);
@@ -54,7 +54,61 @@ class _MyHealthPageState extends State<MyHealthPage> {
       }
     });
   }
-
+  void dataInput(int dataFactor,String dataField){
+    int numberInput = dataFactor;
+    var alert = AlertDialog(
+      title: Text("Enter Number"),
+      content: TextField(
+        controller: TextEditingController(text: dataFactor
+            .toString()),
+        keyboardType:
+        TextInputType.number,
+        style: TextStyle(
+            decoration:
+            TextDecoration.none,
+            fontSize: 20),
+        maxLines: 1,
+        autofocus: true,
+        onChanged: (String a){
+          numberInput =
+              int.parse(a);
+        },
+        decoration: new InputDecoration(
+          prefixIcon: new Icon(
+            Icons.dialpad,
+            size: 20.0,
+          ),
+        ),
+      ),
+      actions: <Widget>[
+        FlatButton(
+          child: Text('Ok'),
+          textColor: Colors.black,
+          onPressed: () {
+            Firestore.instance
+                .collection('users')
+                .document(widget.userId)
+                .collection('healthHistory')
+                .document(historyDate.toString()).updateData({dataField:numberInput});
+            Navigator.of(context).pop();
+          },
+        ),
+        FlatButton(
+          child: Text('Cancel'),
+          textColor: Colors.black,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (context) {
+        return alert;
+      },
+    );
+  }
   @override
   void initState() {
     super.initState();
@@ -162,184 +216,271 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                 Expanded(
                                   child: Column(
                                     children: <Widget>[
-                                      Container(
-                                        height: 160,
-                                        color: Colors.blue,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            ListTile(
-                                              title: Text(
-                                                healthDetails['steps'].toString(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .display1
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                      fontSize: 24.0,
-                                                    ),
+                                      InkWell(
+                                        child: Container(
+                                          height: 160,
+                                          color: Colors.blue,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              ListTile(
+                                                title: Text(
+                                                  healthDetails['steps']
+                                                      .toString(),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .display1
+                                                      .copyWith(
+                                                        color: Colors.white,
+                                                        fontSize: 24.0,
+                                                      ),
+                                                ),
+                                                trailing: Icon(
+                                                  CustomIcons.directions_walk,
+                                                  color: Colors.white,
+                                                ),
                                               ),
-                                              trailing: Icon(
-                                                CustomIcons.directions_walk,
-                                                color: Colors.white,
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 16.0),
+                                                child: Text(
+                                                  'Steps',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        onTap: () {
+                                          int numberInput = healthDetails['steps'];
+                                          var alert = AlertDialog(
+                                            title: Text("Enter Number"),
+                                            content: TextField(
+                                              controller: TextEditingController(text: healthDetails['steps']
+                                                  .toString()),
+                                              keyboardType:
+                                                  TextInputType.number,
+                                              style: TextStyle(
+                                                  decoration:
+                                                      TextDecoration.none,
+                                                  fontSize: 20),
+                                              maxLines: 1,
+                                              autofocus: true,
+//                                              enabled: true,
+                                              onChanged: (String a){
+                                                numberInput =
+                                                    int.parse(a);
+                                              },
+                                              decoration: new InputDecoration(
+                                                prefixIcon: new Icon(
+                                                  Icons.dialpad,
+                                                  size: 20.0,
+                                                ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0),
-                                              child: Text(
-                                                'Steps',
-                                                style: TextStyle(
-                                                    color: Colors.white),
+                                            actions: <Widget>[
+                                              FlatButton(
+                                                child: Text('Ok'),
+                                                textColor: Colors.black,
+                                                onPressed: () {
+                                                  Firestore.instance
+                                                      .collection('users')
+                                                      .document(widget.userId)
+                                                      .collection('healthHistory')
+                                                      .document(historyDate.toString()).updateData({"steps":numberInput});
+                                                  Navigator.of(context).pop();
+                                                },
                                               ),
-                                            )
-                                          ],
-                                        ),
+                                              FlatButton(
+                                                child: Text('Cancel'),
+                                                textColor: Colors.black,
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                            ],
+                                          );
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return alert;
+                                            },
+                                          );
+                                        },
                                       ),
                                       const SizedBox(height: 10.0),
-                                      Container(
-                                        height: 120,
-                                        color: Colors.red,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            ListTile(
-                                              title: Text(
-                                                healthDetails['heartRate'].toString()+' ',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .display1
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                      fontSize: 24.0,
-                                                    ),
+                                      InkWell(
+                                        child: Container(
+                                          height: 120,
+                                          color: Colors.red,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              ListTile(
+                                                title: Text(
+                                                  healthDetails['heartRate']
+                                                          .toString() +
+                                                      ' ',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .display1
+                                                      .copyWith(
+                                                        color: Colors.white,
+                                                        fontSize: 24.0,
+                                                      ),
+                                                ),
+                                                trailing: Icon(
+                                                  CustomIcons.heartbeat,
+                                                  color: Colors.white,
+                                                ),
                                               ),
-                                              trailing: Icon(
-                                                CustomIcons.heartbeat,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0),
-                                              child: Text(
-                                                'Avg. Heart Rate',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            )
-                                          ],
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 16.0),
+                                                child: Text(
+                                                  'Avg. Heart Rate',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
+                                        onTap: (){
+                                          dataInput(healthDetails['heartRate'], 'heartRate');
+                                        },
                                       ),
                                       const SizedBox(height: 10.0),
-                                      Container(
-                                        height: 120,
-                                        color: Colors.purple,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            ListTile(
-                                              title: Text(
-                                                healthDetails['sleep'].toString()+' hours',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .display1
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                      fontSize: 24.0,
-                                                    ),
+                                      InkWell(
+                                        child: Container(
+                                          height: 120,
+                                          color: Colors.purple,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              ListTile(
+                                                title: Text(
+                                                  healthDetails['sleep']
+                                                          .toString() +
+                                                      ' hours',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .display1
+                                                      .copyWith(
+                                                        color: Colors.white,
+                                                        fontSize: 24.0,
+                                                      ),
+                                                ),
+                                                trailing: Icon(
+                                                  CustomIcons.bed,
+                                                  color: Colors.white,
+                                                ),
                                               ),
-                                              trailing: Icon(
-                                                CustomIcons.bed,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0),
-                                              child: Text(
-                                                'Sleep',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            )
-                                          ],
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 16.0),
+                                                child: Text(
+                                                  'Sleep',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
+                                        onTap: (){
+                                          dataInput(healthDetails['sleep'], 'sleep');
+                                        },
                                       ),
                                       const SizedBox(height: 10.0),
-                                      Container(
-                                        height: 150,
-                                        color: Colors.green,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            ListTile(
-                                              title: Text(
-                                                healthDetails['glucose'].toString()+" mg/dl",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .display1
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                      fontSize: 24.0,
-                                                    ),
+                                      InkWell(
+                                        child: Container(
+                                          height: 150,
+                                          color: Colors.green,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              ListTile(
+                                                title: Text(
+                                                  healthDetails['glucose']
+                                                          .toString() +
+                                                      " mg/dl",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .display1
+                                                      .copyWith(
+                                                        color: Colors.white,
+                                                        fontSize: 24.0,
+                                                      ),
+                                                ),
+                                                trailing: Icon(
+                                                  CustomIcons.droplet,
+                                                  color: Colors.white,
+                                                ),
                                               ),
-                                              trailing: Icon(
-                                                CustomIcons.droplet,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0),
-                                              child: Text(
-                                                'Blood glucose',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            )
-                                          ],
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 16.0),
+                                                child: Text(
+                                                  'Blood glucose',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
+                                        onTap: (){
+                                          dataInput(healthDetails['glucose'], 'glucose');
+                                        },
                                       ),
                                       const SizedBox(height: 10.0),
-                                      Container(
-                                        height: 120,
-                                        color: Colors.green,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            ListTile(
-                                              title: Text(
-                                                healthDetails['weight'].toString()+" kg",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .display1
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                      fontSize: 24.0,
-                                                    ),
+                                      InkWell(
+                                        child: Container(
+                                          height: 120,
+                                          color: Colors.green,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              ListTile(
+                                                title: Text(
+                                                  healthDetails['weight']
+                                                          .toString() +
+                                                      " kg",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .display1
+                                                      .copyWith(
+                                                        color: Colors.white,
+                                                        fontSize: 24.0,
+                                                      ),
+                                                ),
+                                                trailing: Icon(
+                                                  CustomIcons.gauge,
+                                                  color: Colors.white,
+                                                ),
                                               ),
-                                              trailing: Icon(
-                                                CustomIcons.gauge,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0),
-                                              child: Text(
-                                                'Weight',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            )
-                                          ],
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 16.0),
+                                                child: Text(
+                                                  'Weight',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
+                                        onTap: (){
+                                          dataInput(healthDetails['weight'], 'weight');
+                                        },
                                       ),
                                     ],
                                   ),
@@ -348,76 +489,88 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                 Expanded(
                                   child: Column(
                                     children: <Widget>[
-                                      Container(
-                                        height: 120,
-                                        color: Colors.green,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            ListTile(
-                                              title: Text(
-                                              healthDetails['calIntake'].toString(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .display1
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                      fontSize: 24.0,
-                                                    ),
+                                      InkWell(
+                                        child: Container(
+                                          height: 120,
+                                          color: Colors.green,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              ListTile(
+                                                title: Text(
+                                                  healthDetails['calIntake']
+                                                      .toString(),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .display1
+                                                      .copyWith(
+                                                        color: Colors.white,
+                                                        fontSize: 24.0,
+                                                      ),
+                                                ),
+                                                trailing: Icon(
+                                                  Icons.fastfood,
+                                                  color: Colors.white,
+                                                ),
                                               ),
-                                              trailing: Icon(
-                                                Icons.fastfood,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0),
-                                              child: Text(
-                                                'Calories Intake',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            )
-                                          ],
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 16.0),
+                                                child: Text(
+                                                  'Calories Intake',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
+                                        onTap: (){
+                                          dataInput(healthDetails['calIntake'], 'calIntake');
+                                        },
                                       ),
                                       const SizedBox(height: 10.0),
-                                      Container(
-                                        height: 120,
-                                        color: Colors.deepOrange,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            ListTile(
-                                              title: Text(
-                                                healthDetails['calBurn'].toString(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .display1
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                      fontSize: 24.0,
-                                                    ),
+                                      InkWell(
+                                        child: Container(
+                                          height: 120,
+                                          color: Colors.deepOrange,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              ListTile(
+                                                title: Text(
+                                                  healthDetails['calBurn']
+                                                      .toString(),
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .display1
+                                                      .copyWith(
+                                                        color: Colors.white,
+                                                        fontSize: 24.0,
+                                                      ),
+                                                ),
+                                                trailing: Icon(
+                                                  CustomIcons.fire,
+                                                  color: Colors.white,
+                                                ),
                                               ),
-                                              trailing: Icon(
-                                                CustomIcons.fire,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0),
-                                              child: Text(
-                                                'Calories Burned',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            )
-                                          ],
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 16.0),
+                                                child: Text(
+                                                  'Calories Burned',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
+                                        onTap: (){
+                                          dataInput(healthDetails['calBurn'], 'calBurn');
+                                        },
                                       ),
                                       const SizedBox(height: 10.0),
                                       Container(
@@ -429,7 +582,9 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                           children: <Widget>[
                                             ListTile(
                                               title: Text(
-                                                healthDetails['distance'].toString()+' km',
+                                                healthDetails['distance']
+                                                        .toString() +
+                                                    ' km',
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .display1
@@ -442,6 +597,9 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                                 CustomIcons.road,
                                                 color: Colors.black,
                                               ),
+                                              onTap: (){
+                                                dataInput(healthDetails['distance'], 'distance');
+                                              },
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
@@ -452,7 +610,9 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                             ),
                                             ListTile(
                                               title: Text(
-                                                healthDetails['activeMin'].toString()+" mins",
+                                                healthDetails['activeMin']
+                                                        .toString() +
+                                                    " mins",
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .display1
@@ -465,6 +625,9 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                                 Icons.timer,
                                                 color: Colors.black,
                                               ),
+                                              onTap: (){
+                                                dataInput(healthDetails['activeMin'], 'activeMin');
+                                              },
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
@@ -486,7 +649,14 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                           children: <Widget>[
                                             ListTile(
                                               title: Text(
-                                                ((healthDetails['weight'] / pow(healthDetails['height'] / 100, 2)).toStringAsFixed(1))+" kg/m2",
+                                                ((healthDetails['weight'] /
+                                                            pow(
+                                                                healthDetails[
+                                                                        'height'] /
+                                                                    100,
+                                                                2))
+                                                        .toStringAsFixed(1)) +
+                                                    " kg/m2",
                                                 style: Theme.of(context)
                                                     .textTheme
                                                     .display1
@@ -513,40 +683,47 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                         ),
                                       ),
                                       const SizedBox(height: 10.0),
-                                      Container(
-                                        height: 120,
-                                        color: Colors.green,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            ListTile(
-                                              title: Text(
-                                                healthDetails['height'].toString()+" cm",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .display1
-                                                    .copyWith(
-                                                      color: Colors.white,
-                                                      fontSize: 24.0,
-                                                    ),
+                                      InkWell(
+                                        child: Container(
+                                          height: 120,
+                                          color: Colors.green,
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              ListTile(
+                                                title: Text(
+                                                  healthDetails['height']
+                                                          .toString() +
+                                                      " cm",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .display1
+                                                      .copyWith(
+                                                        color: Colors.white,
+                                                        fontSize: 24.0,
+                                                      ),
+                                                ),
+                                                trailing: Icon(
+                                                  CustomIcons.ruler,
+                                                  color: Colors.white,
+                                                ),
                                               ),
-                                              trailing: Icon(
-                                                CustomIcons.ruler,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 16.0),
-                                              child: Text(
-                                                'Height',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                            )
-                                          ],
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 16.0),
+                                                child: Text(
+                                                  'Height',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              )
+                                            ],
+                                          ),
                                         ),
+                                        onTap: (){
+                                          dataInput(healthDetails['height'], 'height');
+                                        },
                                       ),
                                     ],
                                   ),
