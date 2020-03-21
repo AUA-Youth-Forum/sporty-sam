@@ -59,6 +59,30 @@
       "css": "female-1",
       "code": 61826,
       "src": "fontawesome"
+    },
+    {
+      "uid": "a6d4cb043657a701baa51cdbbfbcef4f",
+      "css": "directions_walk",
+      "code": 59397,
+      "src": "material"
+    },
+    {
+      "uid": "cc6a79edb1e82ee90129147ba089c323",
+      "css": "fire",
+      "code": 62757,
+      "src": "mfglabs"
+    },
+    {
+      "uid": "d84a06c5ce6da9ebdc9b0a5cb94db4c4",
+      "css": "heartbeat",
+      "code": 61982,
+      "src": "fontawesome"
+    },
+    {
+      "uid": "ecede48deb16179e5ef9a3f8ffae62f4",
+      "css": "road",
+      "code": 59398,
+      "src": "fontawesome"
     }
   ]
 }
