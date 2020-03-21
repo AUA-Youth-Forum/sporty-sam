@@ -38,13 +38,14 @@ class _MyHealthPageState extends State<MyHealthPage> {
           title: Text('My Health History'),
         ),
         body: SingleChildScrollView(
+            padding: const EdgeInsets.all(16.0),
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             RaisedButton(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5.0)),
+                  borderRadius: BorderRadius.circular(15.0)),
               elevation: 4.0,
               onPressed: () {
                 DatePicker.showDatePicker(context,
@@ -118,338 +119,145 @@ class _MyHealthPageState extends State<MyHealthPage> {
             )),
             SizedBox(height: 20),
             //active time
-            Card(
-              elevation: 2.0,
-              child: Container(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.directions_run,
-                          size: 25,
-                          color: Colors.green,
-                        ),
-                        SizedBox(width: 10,height: 40,),
-                        Text('Active Time',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                            textAlign: TextAlign.left)
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
+            const SizedBox(height: 50.0),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        height: 190,
+                        color: Colors.blue,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('$_activeTime ',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 30),
-                                textAlign: TextAlign.left),
-                            Text('/ $_activeTotal mins',
-                                style: TextStyle(
-                                     fontSize: 20),
-                                textAlign: TextAlign.left),
-
+                            ListTile(
+                              title: Text(
+                                "9,850",
+                                style:
+                                Theme.of(context).textTheme.display1.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 24.0,
+                                ),
+                              ),
+                              trailing: Icon(
+                                CustomIcons.directions_walk,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                'Steps',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
                           ],
                         ),
-                        Row(
+                      ),
+                      const SizedBox(height: 10.0),
+                      Container(
+                        height: 120,
+                        color: Colors.green,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('$_activeCalories',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 25),
-                                textAlign: TextAlign.left),
-                            Text(' kCal  ',
-                                style: TextStyle(
-                                     fontSize: 20),
-                                textAlign: TextAlign.left),
-                            Text('$_activeDistance',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 20),
-                                textAlign: TextAlign.left),
-                            Text(' km  ',
-                                style: TextStyle(
-                                    fontSize: 20),
-                                textAlign: TextAlign.left),
-
+                            ListTile(
+                              title: Text(
+                                "70 bpm",
+                                style:
+                                Theme.of(context).textTheme.display1.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 24.0,
+                                ),
+                              ),
+                              trailing: Icon(
+                                CustomIcons.heartbeat,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                'Avg. Heart Rate',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
                           ],
                         ),
-                      ],
-                    )
-
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            ),
-            Card(
-              elevation: 2.0,
-              child: Container(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          CustomIcons.bed,
-                          size: 25,
-                          color: Colors.blue,
-                        ),
-                        SizedBox(width: 10,height: 40,),
-                        Text('Sleep Time',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                            textAlign: TextAlign.left)
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
+                const SizedBox(width: 10.0),
+                Expanded(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        height: 120,
+                        color: Colors.red,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('$_sleepHours',
-                                style: TextStyle(
-                                     fontSize: 25),
-                                textAlign: TextAlign.left),
-                            Text(' hours',
-                                style: TextStyle(
-                                    fontSize: 20),
-                                textAlign: TextAlign.left),
-
+                            ListTile(
+                              title: Text(
+                                "2,430",
+                                style:
+                                Theme.of(context).textTheme.display1.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 24.0,
+                                ),
+                              ),
+                              trailing: Icon(
+                                CustomIcons.fire,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                'Calories Burned',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            )
                           ],
                         ),
-
-                      ],
-                    )
-
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              elevation: 2.0,
-              child: Container(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          CustomIcons.heart,
-                          size: 25,
-                          color: Colors.red,
-                        ),
-                        SizedBox(width: 10,height: 40,),
-                        Text('Blood Presure',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                            textAlign: TextAlign.left)
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
+                      ),
+                      const SizedBox(height: 10.0),
+                      Container(
+                        height: 190,
+                        color: Colors.yellow,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text('$_bloodPreasure',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 25),
-                                textAlign: TextAlign.left),
-                            Text(' mmHg',
-                                style: TextStyle(
-                                    fontSize: 20),
-                                textAlign: TextAlign.left),
+                            ListTile(
+                              title: Text(
+                                "15 kms",
+                                style:
+                                Theme.of(context).textTheme.display1.copyWith(
+                                  fontSize: 24.0,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              trailing: Icon(
+                                CustomIcons.road,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                'Distance',
+                              ),
+                            )
                           ],
                         ),
-
-                      ],
-                    )
-
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              elevation: 2.0,
-              child: Container(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          CustomIcons.droplet,
-                          size: 25,
-                          color: Colors.redAccent,
-                        ),
-                        SizedBox(width: 10,height: 40,),
-                        Text('Blood glucose',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                            textAlign: TextAlign.left)
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text('$_bloodGlucoes',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 25),
-                                textAlign: TextAlign.left),
-                            Text(' mg/dl',
-                                style: TextStyle(
-                                    fontSize: 20),
-                                textAlign: TextAlign.left),
-
-                          ],
-                        ),
-
-                      ],
-                    )
-
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              elevation: 2.0,
-              child: Container(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          CustomIcons.gauge,
-                          size: 25,
-                          color: Colors.amber,
-                        ),
-                        SizedBox(width: 10,height: 40,),
-                        Text('Weight',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                            textAlign: TextAlign.left)
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text('$_weight',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 25),
-                                textAlign: TextAlign.left),
-                            Text(' kg',
-                                style: TextStyle(
-                                     fontSize: 25),
-                                textAlign: TextAlign.left),
-
-                          ],
-                        ),
-
-                      ],
-                    )
-
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              elevation: 2.0,
-              child: Container(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          CustomIcons.ruler,
-                          size: 25,
-                          color: Colors.indigo,
-                        ),
-                        SizedBox(width: 10,height: 40,),
-                        Text('Height',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                            textAlign: TextAlign.left)
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text('$_height',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 25),
-                                textAlign: TextAlign.left),
-                            Text(' cm',
-                                style: TextStyle(
-                                    fontSize: 25),
-                                textAlign: TextAlign.left),
-
-                          ],
-                        ),
-
-                      ],
-                    )
-
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              elevation: 2.0,
-              child: Container(
-                padding: EdgeInsets.all(10.0),
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        Icon(
-                          CustomIcons.gauge,
-                          size: 25,
-                          color: Colors.amber,
-                        ),
-                        SizedBox(width: 10,height: 40,),
-                        Text('BMI',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16),
-                            textAlign: TextAlign.left)
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            Text('$_bmi',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 25),
-                                textAlign: TextAlign.left),
-                            Text(' kg/m2',
-                                style: TextStyle(
-                                    fontSize: 20),
-                                textAlign: TextAlign.left),
-
-                          ],
-                        ),
-                        Text('Normal',
-                            style: TextStyle(
-                               fontWeight: FontWeight.bold, fontSize: 20),
-                            textAlign: TextAlign.left),
-
-
-                      ],
-                    )
-
-                  ],
-                ),
-              ),
-            ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            )
           ],
         )));
   }

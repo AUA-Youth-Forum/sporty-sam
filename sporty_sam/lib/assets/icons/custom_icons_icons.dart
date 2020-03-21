@@ -20,6 +20,10 @@
 ///         Author:    MFG Labs
 ///         License:   SIL (http://scripts.sil.org/OFL)
 ///         Homepage:  http://www.mfglabs.com/
+/// * Material Design Icons, Copyright (C) Google, Inc
+///         Author:    Google
+///         License:   Apache 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
+///         Homepage:  https://design.google.com/icons/
 /// * Font Awesome, Copyright (C) 2016 by Dave Gandy
 ///         Author:    Dave Gandy
 ///         License:   SIL ()
@@ -37,8 +41,12 @@ class CustomIcons {
   static const IconData droplet = IconData(0xe802, fontFamily: _kFontFam);
   static const IconData female = IconData(0xe803, fontFamily: _kFontFam);
   static const IconData male = IconData(0xe804, fontFamily: _kFontFam);
+  static const IconData directions_walk = IconData(0xe805, fontFamily: _kFontFam);
+  static const IconData road = IconData(0xe806, fontFamily: _kFontFam);
   static const IconData ruler = IconData(0xf044, fontFamily: _kFontFam);
   static const IconData female_1 = IconData(0xf182, fontFamily: _kFontFam);
   static const IconData male_1 = IconData(0xf183, fontFamily: _kFontFam);
+  static const IconData heartbeat = IconData(0xf21e, fontFamily: _kFontFam);
   static const IconData bed = IconData(0xf236, fontFamily: _kFontFam);
+  static const IconData fire = IconData(0xf525, fontFamily: _kFontFam);
 }
