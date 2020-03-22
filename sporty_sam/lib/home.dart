@@ -237,7 +237,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ProfPage()));
+                            builder: (context) => ProfPage(userId: widget.userId,)));
                   },
                   iconSize: 48.0,
                   color: Colors.black),
