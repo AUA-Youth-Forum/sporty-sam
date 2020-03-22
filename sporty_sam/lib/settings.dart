@@ -40,7 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    print(widget.userId + 'eryrhy');
+
   }
 
   @override
@@ -255,7 +255,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         ),
                                         showTitleActions: true,
                                         minTime: DateTime(1950, 1, 1),
-                                        //maxTime: DateTime(2022, 12, 31),
+                                        maxTime: DateTime.now(),
                                         onConfirm: (date) {
                                       try {
                                         Firestore.instance
@@ -264,6 +264,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                             .updateData(
                                                 {'birthday': date.toString()});
                                       } catch (e) {
+                                        print('abcd');
                                         print(e.toString());
                                       }
                                     },
