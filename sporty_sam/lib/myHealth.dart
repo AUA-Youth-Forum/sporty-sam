@@ -113,6 +113,7 @@ class _MyHealthPageState extends State<MyHealthPage> {
   void initState() {
     super.initState();
     historyDate = dateOnly(DateTime.now());
+
   }
 
   @override
