@@ -22,12 +22,12 @@ class _MyHealthPageState extends State<MyHealthPage> {
     return DateTime(oldDate.year, oldDate.month, oldDate.day);
   }
 
-  void setDatabaseDate() {
+  void setDatabaseDate(DateTime requiredDate) {
     Firestore.instance
         .collection('users')
         .document(widget.userId)
         .collection('healthHistory')
-        .document(historyDate.toString())
+        .document(requiredDate.toString())
         .get()
         .then((onValue) {
       if (onValue.exists) {
@@ -38,7 +38,7 @@ class _MyHealthPageState extends State<MyHealthPage> {
             .collection('users')
             .document(widget.userId)
             .collection('healthHistory')
-            .document(historyDate.toString())
+            .document(requiredDate.toString())
             .setData({
           "steps": 0,
           "calIntake": 0,
@@ -51,27 +51,23 @@ class _MyHealthPageState extends State<MyHealthPage> {
           "weight": 0,
           "height": 0,
         });
+        print('dataset done');
       }
     });
   }
-  void dataInput(int dataFactor,String dataField){
+
+  void dataInput(int dataFactor, String dataField) {
     int numberInput = dataFactor;
     var alert = AlertDialog(
       title: Text("Enter Number"),
       content: TextField(
-        controller: TextEditingController(text: dataFactor
-            .toString()),
-        keyboardType:
-        TextInputType.number,
-        style: TextStyle(
-            decoration:
-            TextDecoration.none,
-            fontSize: 20),
+        controller: TextEditingController(text: dataFactor.toString()),
+        keyboardType: TextInputType.number,
+        style: TextStyle(decoration: TextDecoration.none, fontSize: 20),
         maxLines: 1,
         autofocus: true,
-        onChanged: (String a){
-          numberInput =
-              int.parse(a);
+        onChanged: (String a) {
+          numberInput = int.parse(a);
         },
         decoration: new InputDecoration(
           prefixIcon: new Icon(
@@ -89,7 +85,8 @@ class _MyHealthPageState extends State<MyHealthPage> {
                 .collection('users')
                 .document(widget.userId)
                 .collection('healthHistory')
-                .document(historyDate.toString()).updateData({dataField:numberInput});
+                .document(historyDate.toString())
+                .updateData({dataField: numberInput});
             Navigator.of(context).pop();
           },
         ),
@@ -109,11 +106,11 @@ class _MyHealthPageState extends State<MyHealthPage> {
       },
     );
   }
+
   @override
   void initState() {
     super.initState();
     historyDate = dateOnly(DateTime.now());
-
   }
 
   @override
@@ -160,9 +157,9 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                     minTime: DateTime(2000, 1, 1),
                                     //maxTime: DateTime(2022, 12, 31),
                                     onConfirm: (date) {
+                                  setDatabaseDate(dateOnly(date));
                                   setState(() {
                                     historyDate = dateOnly(date);
-                                    setDatabaseDate();
                                   });
                                 },
                                     currentTime: historyDate,
@@ -255,60 +252,8 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                           ),
                                         ),
                                         onTap: () {
-                                          int numberInput = healthDetails['steps'];
-                                          var alert = AlertDialog(
-                                            title: Text("Enter Number"),
-                                            content: TextField(
-                                              controller: TextEditingController(text: healthDetails['steps']
-                                                  .toString()),
-                                              keyboardType:
-                                                  TextInputType.number,
-                                              style: TextStyle(
-                                                  decoration:
-                                                      TextDecoration.none,
-                                                  fontSize: 20),
-                                              maxLines: 1,
-                                              autofocus: true,
-//                                              enabled: true,
-                                              onChanged: (String a){
-                                                numberInput =
-                                                    int.parse(a);
-                                              },
-                                              decoration: new InputDecoration(
-                                                prefixIcon: new Icon(
-                                                  Icons.dialpad,
-                                                  size: 20.0,
-                                                ),
-                                              ),
-                                            ),
-                                            actions: <Widget>[
-                                              FlatButton(
-                                                child: Text('Ok'),
-                                                textColor: Colors.black,
-                                                onPressed: () {
-                                                  Firestore.instance
-                                                      .collection('users')
-                                                      .document(widget.userId)
-                                                      .collection('healthHistory')
-                                                      .document(historyDate.toString()).updateData({"steps":numberInput});
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                              FlatButton(
-                                                child: Text('Cancel'),
-                                                textColor: Colors.black,
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                          showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return alert;
-                                            },
-                                          );
+                                          dataInput(
+                                              healthDetails['steps'], 'steps');
                                         },
                                       ),
                                       const SizedBox(height: 10.0),
@@ -350,8 +295,9 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                             ],
                                           ),
                                         ),
-                                        onTap: (){
-                                          dataInput(healthDetails['heartRate'], 'heartRate');
+                                        onTap: () {
+                                          dataInput(healthDetails['heartRate'],
+                                              'heartRate');
                                         },
                                       ),
                                       const SizedBox(height: 10.0),
@@ -393,8 +339,9 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                             ],
                                           ),
                                         ),
-                                        onTap: (){
-                                          dataInput(healthDetails['sleep'], 'sleep');
+                                        onTap: () {
+                                          dataInput(
+                                              healthDetails['sleep'], 'sleep');
                                         },
                                       ),
                                       const SizedBox(height: 10.0),
@@ -436,8 +383,9 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                             ],
                                           ),
                                         ),
-                                        onTap: (){
-                                          dataInput(healthDetails['glucose'], 'glucose');
+                                        onTap: () {
+                                          dataInput(healthDetails['glucose'],
+                                              'glucose');
                                         },
                                       ),
                                       const SizedBox(height: 10.0),
@@ -479,8 +427,9 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                             ],
                                           ),
                                         ),
-                                        onTap: (){
-                                          dataInput(healthDetails['weight'], 'weight');
+                                        onTap: () {
+                                          dataInput(healthDetails['weight'],
+                                              'weight');
                                         },
                                       ),
                                     ],
@@ -527,8 +476,9 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                             ],
                                           ),
                                         ),
-                                        onTap: (){
-                                          dataInput(healthDetails['calIntake'], 'calIntake');
+                                        onTap: () {
+                                          dataInput(healthDetails['calIntake'],
+                                              'calIntake');
                                         },
                                       ),
                                       const SizedBox(height: 10.0),
@@ -569,8 +519,9 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                             ],
                                           ),
                                         ),
-                                        onTap: (){
-                                          dataInput(healthDetails['calBurn'], 'calBurn');
+                                        onTap: () {
+                                          dataInput(healthDetails['calBurn'],
+                                              'calBurn');
                                         },
                                       ),
                                       const SizedBox(height: 10.0),
@@ -598,8 +549,10 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                                 CustomIcons.road,
                                                 color: Colors.black,
                                               ),
-                                              onTap: (){
-                                                dataInput(healthDetails['distance'], 'distance');
+                                              onTap: () {
+                                                dataInput(
+                                                    healthDetails['distance'],
+                                                    'distance');
                                               },
                                             ),
                                             Padding(
@@ -626,8 +579,10 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                                 Icons.timer,
                                                 color: Colors.black,
                                               ),
-                                              onTap: (){
-                                                dataInput(healthDetails['activeMin'], 'activeMin');
+                                              onTap: () {
+                                                dataInput(
+                                                    healthDetails['activeMin'],
+                                                    'activeMin');
                                               },
                                             ),
                                             Padding(
@@ -722,8 +677,9 @@ class _MyHealthPageState extends State<MyHealthPage> {
                                             ],
                                           ),
                                         ),
-                                        onTap: (){
-                                          dataInput(healthDetails['height'], 'height');
+                                        onTap: () {
+                                          dataInput(healthDetails['height'],
+                                              'height');
                                         },
                                       ),
                                     ],
@@ -737,6 +693,7 @@ class _MyHealthPageState extends State<MyHealthPage> {
               },
             ),
           ),
-        ));
+        )
+    );
   }
 }
