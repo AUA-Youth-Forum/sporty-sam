@@ -179,8 +179,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   height: 300,
                   width: 300,
                   child: FlareActor(
-                    "lib/assets/animations/teddy.flr",
-                    animation: "success",
+                    "lib/assets/animations/cat_sleep.flr",
+                    animation: "eye movement",
                     //color: Colors.red
                   ),
                 ),
