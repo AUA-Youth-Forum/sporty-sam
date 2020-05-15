@@ -19,6 +19,8 @@ import 'dart:async';
 
 import 'myProfile.dart';
 
+import 'package:sensors/sensors.dart';
+
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.auth, this.userId, this.logoutCallback})
@@ -33,6 +35,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  //sensor
+  List<double> _accelerometerValues;
+  List<double> _userAccelerometerValues;
+  List<double> _gyroscopeValues;
+  List<StreamSubscription<dynamic>> _streamSubscriptions = <StreamSubscription<dynamic>>[];
+  //
 
   signOut() async {
     try {
@@ -81,8 +90,27 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-  setDatabaseDate();
+    setDatabaseDate();
     //_checkEmailVerification();
+
+    //sensor
+    _streamSubscriptions
+        .add(accelerometerEvents.listen((AccelerometerEvent event) {
+      setState(() {
+        _accelerometerValues = <double>[event.x, event.y, event.z];
+      });
+    }));
+    _streamSubscriptions.add(gyroscopeEvents.listen((GyroscopeEvent event) {
+      setState(() {
+        _gyroscopeValues = <double>[event.x, event.y, event.z];
+      });
+    }));
+    _streamSubscriptions
+        .add(userAccelerometerEvents.listen((UserAccelerometerEvent event) {
+      setState(() {
+        _userAccelerometerValues = <double>[event.x, event.y, event.z];
+      });
+    }));
   }
 
   //  void _checkEmailVerification() async {
@@ -147,6 +175,16 @@ class _MyHomePageState extends State<MyHomePage> {
 //  }
 
   Widget build(BuildContext context) {
+    //sensor
+    final List<String> accelerometer =
+    _accelerometerValues?.map((double v) => v.toStringAsFixed(1))?.toList();
+    final List<String> gyroscope =
+    _gyroscopeValues?.map((double v) => v.toStringAsFixed(1))?.toList();
+    final List<String> userAccelerometer = _userAccelerometerValues
+        ?.map((double v) => v.toStringAsFixed(1))
+        ?.toList();
+    //
+
     final controller = FabCircularMenuController();
     return Scaffold(
 //      appBar: AppBar(
@@ -170,6 +208,34 @@ class _MyHomePageState extends State<MyHomePage> {
                 //style: Theme.of(context).textTheme.display1,
 
               ),
+              Padding(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text('Accelerometer: $accelerometer'),
+                  ],
+                ),
+                padding: const EdgeInsets.all(16.0),
+              ),
+              Padding(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text('UserAccelerometer: $userAccelerometer'),
+                  ],
+                ),
+                padding: const EdgeInsets.all(16.0),
+              ),
+              Padding(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text('Gyroscope: $gyroscope'),
+                  ],
+                ),
+                padding: const EdgeInsets.all(16.0),
+              ),
+
 
               SizedBox(
                 height: 20,
