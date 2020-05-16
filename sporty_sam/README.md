@@ -25,3 +25,4 @@ https://flutterawesome.com/beautytextfield-made-with-flutter/
 https://simpleactivity435203168.wordpress.com/2019/10/05/firebase-authentication-with-flutter/
 
 https://pub.dev/packages/sensors
+https://pub.dev/packages/activity_recognition_flutter#-installing-tab-

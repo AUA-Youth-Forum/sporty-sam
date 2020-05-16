@@ -10,7 +10,6 @@ import 'myHealth.dart';
 import 'challenge.dart';
 import 'myProfile.dart';
 
-
 import 'package:sporty_sam/services/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -20,7 +19,7 @@ import 'dart:async';
 import 'myProfile.dart';
 
 import 'package:sensors/sensors.dart';
-
+import 'package:activity_recognition_flutter/activity_recognition_flutter.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.auth, this.userId, this.logoutCallback})
@@ -40,7 +39,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List<double> _accelerometerValues;
   List<double> _userAccelerometerValues;
   List<double> _gyroscopeValues;
-  List<StreamSubscription<dynamic>> _streamSubscriptions = <StreamSubscription<dynamic>>[];
+  List<StreamSubscription<dynamic>> _streamSubscriptions =
+      <StreamSubscription<dynamic>>[];
   //
 
   signOut() async {
@@ -51,9 +51,11 @@ class _MyHomePageState extends State<MyHomePage> {
       print(e);
     }
   }
+
   DateTime dateOnly(DateTime oldDate) {
     return DateTime(oldDate.year, oldDate.month, oldDate.day);
   }
+
   void setDatabaseDate() {
     Firestore.instance
         .collection('users')
@@ -86,6 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
   }
+
   //bool _isEmailVerified = false;
   @override
   void initState() {
@@ -93,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setDatabaseDate();
     //_checkEmailVerification();
 
-    //sensor
+    ////////////////////sensor
     _streamSubscriptions
         .add(accelerometerEvents.listen((AccelerometerEvent event) {
       setState(() {
@@ -111,6 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _userAccelerometerValues = <double>[event.x, event.y, event.z];
       });
     }));
+    ///////////////////////
   }
 
   //  void _checkEmailVerification() async {
@@ -177,20 +181,16 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     //sensor
     final List<String> accelerometer =
-    _accelerometerValues?.map((double v) => v.toStringAsFixed(1))?.toList();
+        _accelerometerValues?.map((double v) => v.toStringAsFixed(1))?.toList();
     final List<String> gyroscope =
-    _gyroscopeValues?.map((double v) => v.toStringAsFixed(1))?.toList();
+        _gyroscopeValues?.map((double v) => v.toStringAsFixed(1))?.toList();
     final List<String> userAccelerometer = _userAccelerometerValues
         ?.map((double v) => v.toStringAsFixed(1))
         ?.toList();
     //
-
+    String petMovement = "fail";
     final controller = FabCircularMenuController();
     return Scaffold(
-//      appBar: AppBar(
-//
-//        title: Text(widget.title),
-//      ),
         body: Center(
       child: Stack(
         alignment: Alignment.center,
@@ -206,8 +206,8 @@ class _MyHomePageState extends State<MyHomePage> {
               Text(
                 widget.userId,
                 //style: Theme.of(context).textTheme.display1,
-
               ),
+              ////////sensor
               Padding(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -235,28 +235,54 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 padding: const EdgeInsets.all(16.0),
               ),
+              ////////////////////////////////////
+              //activity
+              new Center(
+                child: StreamBuilder(
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      Activity act = snapshot.data;
+                      if (act.type == 'STILL')
+                        petMovement = "success";
+                      else
+                        petMovement = "fail";
 
+                      return new Column(
+                        children: <Widget>[
+                          Text(
+                              "Your phone is to ${act.confidence}% ${act.type}!"),
+                          InkWell(
+                            child: Container(
+                              height: 300,
+                              width: 300,
+                              child: FlareActor(
+                                "lib/assets/animations/teddy.flr",
+                                animation: petMovement,
+                                //color: Colors.red
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => PetShop(),
+                                  ));
+                            },
+                          ),
+                        ],
+                      );
+//                      return Text("Your phone is to ${act.confidence}% ${act.type}!");
+                    }
+
+                    return Text("No activity detected.");
+                  },
+                  stream: ActivityRecognition.activityUpdates(),
+                ),
+              ),
+              ////////////////////
 
               SizedBox(
                 height: 20,
-              ),
-              InkWell(
-                child: Container(
-                  height: 300,
-                  width: 300,
-                  child: FlareActor(
-                    "lib/assets/animations/cat_sleep.flr",
-                    animation: "eye movement",
-                    //color: Colors.red
-                  ),
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PetShop(),
-                      ));
-                },
               ),
             ],
           ),
@@ -283,7 +309,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => SettingsPage(auth: widget.auth,logoutCallback: widget.logoutCallback,userId: widget.userId,)));
+                            builder: (context) => SettingsPage(
+                                  auth: widget.auth,
+                                  logoutCallback: widget.logoutCallback,
+                                  userId: widget.userId,
+                                )));
                   },
                   iconSize: 48.0,
                   color: Colors.black),
@@ -303,7 +333,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ProfPage(userId: widget.userId,)));
+                            builder: (context) => ProfPage(
+                                  userId: widget.userId,
+                                )));
                   },
                   iconSize: 48.0,
                   color: Colors.black),
@@ -313,7 +345,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MyHealthPage(userId: widget.userId,)));
+                            builder: (context) => MyHealthPage(
+                                  userId: widget.userId,
+                                )));
                   },
                   iconSize: 48.0,
                   color: Colors.black),
