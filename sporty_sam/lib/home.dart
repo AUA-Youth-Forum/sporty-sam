@@ -18,7 +18,6 @@ import 'dart:async';
 
 import 'myProfile.dart';
 
-import 'package:sensors/sensors.dart';
 import 'package:activity_recognition_flutter/activity_recognition_flutter.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -35,13 +34,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  //sensor
-  List<double> _accelerometerValues;
-  List<double> _userAccelerometerValues;
-  List<double> _gyroscopeValues;
-  List<StreamSubscription<dynamic>> _streamSubscriptions =
-      <StreamSubscription<dynamic>>[];
-  //
 
   signOut() async {
     try {
@@ -96,25 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setDatabaseDate();
     //_checkEmailVerification();
 
-    ////////////////////sensor
-    _streamSubscriptions
-        .add(accelerometerEvents.listen((AccelerometerEvent event) {
-      setState(() {
-        _accelerometerValues = <double>[event.x, event.y, event.z];
-      });
-    }));
-    _streamSubscriptions.add(gyroscopeEvents.listen((GyroscopeEvent event) {
-      setState(() {
-        _gyroscopeValues = <double>[event.x, event.y, event.z];
-      });
-    }));
-    _streamSubscriptions
-        .add(userAccelerometerEvents.listen((UserAccelerometerEvent event) {
-      setState(() {
-        _userAccelerometerValues = <double>[event.x, event.y, event.z];
-      });
-    }));
-    ///////////////////////
+
   }
 
   //  void _checkEmailVerification() async {
@@ -179,14 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //  }
 
   Widget build(BuildContext context) {
-    //sensor
-    final List<String> accelerometer =
-        _accelerometerValues?.map((double v) => v.toStringAsFixed(1))?.toList();
-    final List<String> gyroscope =
-        _gyroscopeValues?.map((double v) => v.toStringAsFixed(1))?.toList();
-    final List<String> userAccelerometer = _userAccelerometerValues
-        ?.map((double v) => v.toStringAsFixed(1))
-        ?.toList();
+
     //
     String petMovement = "fail";
     final controller = FabCircularMenuController();
@@ -207,35 +174,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 widget.userId,
                 //style: Theme.of(context).textTheme.display1,
               ),
-              ////////sensor
-              Padding(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text('Accelerometer: $accelerometer'),
-                  ],
-                ),
-                padding: const EdgeInsets.all(16.0),
-              ),
-              Padding(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text('UserAccelerometer: $userAccelerometer'),
-                  ],
-                ),
-                padding: const EdgeInsets.all(16.0),
-              ),
-              Padding(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text('Gyroscope: $gyroscope'),
-                  ],
-                ),
-                padding: const EdgeInsets.all(16.0),
-              ),
-              ////////////////////////////////////
               //activity
               new Center(
                 child: StreamBuilder(
