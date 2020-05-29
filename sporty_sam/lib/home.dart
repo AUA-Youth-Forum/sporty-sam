@@ -34,7 +34,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-
   signOut() async {
     try {
       await widget.auth.signOut();
@@ -87,8 +86,6 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     setDatabaseDate();
     //_checkEmailVerification();
-
-
   }
 
   //  void _checkEmailVerification() async {
@@ -153,7 +150,10 @@ class _MyHomePageState extends State<MyHomePage> {
 //  }
 
   Widget build(BuildContext context) {
-
+    ////activity timeline
+    Activity preAct = new Activity("UNKNOWN", 100);
+    DateTime startAct = DateTime.now();
+    DateTime endAct = DateTime.now();
     //
     String petMovement = "fail";
     final controller = FabCircularMenuController();
@@ -179,34 +179,63 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: StreamBuilder(
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
+
                       Activity act = snapshot.data;
+                      print(preAct.type+act.type);
+                      if (act.type != preAct.type) {
+                        endAct = DateTime.now();
+                        print(startAct.toString() +
+                            preAct.type +
+                            endAct.toString());
+                        //calc activity duration
+                        Duration actLength=endAct.difference(startAct);
+                        if(actLength.inSeconds>2) {
+                          //send to database
+                          Firestore.instance.collection('users').document(
+                              widget.userId)
+                              .collection('healthHistory').document(
+                              dateOnly(DateTime.now()).toString())
+                              .collection('activity').document(
+                              startAct.toString()).setData({
+                            "start": startAct.toString(),
+                            "end": endAct.toString(),
+                            "type": preAct.type
+                          });
+                          //
+                        }
+                        startAct = endAct;
+                        preAct = act;
+                        print("preact update:"+preAct.type);
+                      }
                       if (act.type == 'STILL')
-                        petMovement = "success";
-                      else
+                        petMovement = "idle";
+                      else if (act.type=='ON_BICYCLE')
                         petMovement = "fail";
+                      else
+                        petMovement = "success";
 
                       return new Column(
                         children: <Widget>[
                           Text(
                               "Your phone is to ${act.confidence}% ${act.type}!"),
-                          InkWell(
-                            child: Container(
-                              height: 300,
-                              width: 300,
-                              child: FlareActor(
-                                "lib/assets/animations/teddy.flr",
-                                animation: petMovement,
-                                //color: Colors.red
-                              ),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => PetShop(),
-                                  ));
-                            },
-                          ),
+//                          InkWell(
+//                            child: Container(
+//                              height: 300,
+//                              width: 300,
+//                              child: FlareActor(
+//                                "lib/assets/animations/teddy.flr",
+//                                animation: petMovement,
+//                                //color: Colors.red
+//                              ),
+//                            ),
+//                            onTap: () {
+//                              Navigator.push(
+//                                  context,
+//                                  MaterialPageRoute(
+//                                    builder: (context) => PetShop(),
+//                                  ));
+//                            },
+//                          ),
                         ],
                       );
 //                      return Text("Your phone is to ${act.confidence}% ${act.type}!");
