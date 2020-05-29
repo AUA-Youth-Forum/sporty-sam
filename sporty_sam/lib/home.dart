@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:sporty_sam/healthTips.dart';
 import 'package:sporty_sam/petshop.dart';
+import 'package:sporty_sam/activityHistory.dart';
 import './const/fab_circular_menu.dart';
 import './settings.dart';
 import 'dietTracker.dart';
@@ -179,24 +180,25 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: StreamBuilder(
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-
                       Activity act = snapshot.data;
-                      print(preAct.type+act.type);
+                      print(preAct.type + act.type);
                       if (act.type != preAct.type) {
                         endAct = DateTime.now();
                         print(startAct.toString() +
                             preAct.type +
                             endAct.toString());
                         //calc activity duration
-                        Duration actLength=endAct.difference(startAct);
-                        if(actLength.inSeconds>2) {
+                        Duration actLength = endAct.difference(startAct);
+                        if (actLength.inSeconds > 2) {
                           //send to database
-                          Firestore.instance.collection('users').document(
-                              widget.userId)
-                              .collection('healthHistory').document(
-                              dateOnly(DateTime.now()).toString())
-                              .collection('activity').document(
-                              startAct.toString()).setData({
+                          Firestore.instance
+                              .collection('users')
+                              .document(widget.userId)
+                              .collection('healthHistory')
+                              .document(dateOnly(DateTime.now()).toString())
+                              .collection('activity')
+                              .document(startAct.toString())
+                              .setData({
                             "start": startAct.toString(),
                             "end": endAct.toString(),
                             "type": preAct.type
@@ -205,19 +207,28 @@ class _MyHomePageState extends State<MyHomePage> {
                         }
                         startAct = endAct;
                         preAct = act;
-                        print("preact update:"+preAct.type);
+                        print("preact update:" + preAct.type);
                       }
                       if (act.type == 'STILL')
-                        petMovement = "idle";
-                      else if (act.type=='ON_BICYCLE')
                         petMovement = "fail";
+                      else if (act.type == 'ON_BICYCLE')
+                        petMovement = "idle";
                       else
                         petMovement = "success";
 
                       return new Column(
                         children: <Widget>[
-                          Text(
-                              "Your phone is to ${act.confidence}% ${act.type}!"),
+                          InkWell(
+                            child: Text(
+                                "Your phone is to ${act.confidence}% ${act.type}!"),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ActivityHistoryPage(userId: widget.userId,)));
+                            },
+                          ),
 //                          InkWell(
 //                            child: Container(
 //                              height: 300,
@@ -241,7 +252,15 @@ class _MyHomePageState extends State<MyHomePage> {
 //                      return Text("Your phone is to ${act.confidence}% ${act.type}!");
                     }
 
-                    return Text("No activity detected.");
+                    return InkWell(
+                      child: Text("No activity detected."),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ActivityHistoryPage(userId: widget.userId)));
+                      },
+                    );
                   },
                   stream: ActivityRecognition.activityUpdates(),
                 ),
