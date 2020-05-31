@@ -14,6 +14,7 @@ import 'myProfile.dart';
 import 'package:sporty_sam/services/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:pie_chart/pie_chart.dart';
 
 import 'dart:async';
 
@@ -34,6 +35,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  //pie chart
+  Map<String, double> dataMap = Map();
+  List<Color> colorList = [
+    Colors.green,
+    Colors.blue,
+    Colors.purple,
+    Colors.red,
+    Colors.brown
+  ];
 
   signOut() async {
     try {
@@ -81,12 +91,54 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void setChartData() async {
+    double walk = 0, bicycle = 0, run = 0, still = 0, unknown = 0;
+    var result = await Firestore.instance
+        .collection('users')
+        .document(widget.userId)
+        .collection('healthHistory')
+        .document(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toString())
+        .collection('activity')
+        .getDocuments();
+    result.documents.forEach((res) {
+//      print(res.data);
+      Duration actLength = DateTime.parse(res.data["end"])
+          .difference(DateTime.parse(res.data["start"]));
+      if (res.data["type"] == "WALKING") walk += actLength.inSeconds;
+      else if (res.data["type"] == "RUNNING") run += actLength.inSeconds;
+      else if (res.data["type"] == "ON_BICYCLE") bicycle += actLength.inSeconds;
+      else if (res.data["type"] == "UNKNOWN") unknown += actLength.inSeconds;
+      else  still += actLength.inSeconds;
+
+    });
+    setState(() {
+      dataMap= {"WALKING": walk, "RUNNING": run, "ON_BICYCLE": bicycle, "STILL": still, "UNKNOWN": unknown};
+    });
+
+//    dataMap.putIfAbsent("WALKING", () => walk);
+//    dataMap.putIfAbsent("RUNNING", () => run);
+//    dataMap.putIfAbsent("ON_BICYCLE", () => bicycle);
+//    dataMap.putIfAbsent("STILL", () => still);
+//    dataMap.putIfAbsent("UNKNOWN", () => unknown);
+
+
+  }
+
   //bool _isEmailVerified = false;
   @override
   void initState() {
     super.initState();
     setDatabaseDate();
     //_checkEmailVerification();
+    //pie chart
+    dataMap.putIfAbsent("WALKING", () => 15);
+    dataMap.putIfAbsent("RUNNING", () => 5);
+    dataMap.putIfAbsent("ON_BICYCLE", () => 5);
+    dataMap.putIfAbsent("STILL", () => 5);
+    dataMap.putIfAbsent("UNKNOWN", () => 5);
+    setChartData();
+
+//    print(dataMap);
   }
 
   //  void _checkEmailVerification() async {
@@ -171,6 +223,29 @@ class _MyHomePageState extends State<MyHomePage> {
                 'Welcome to Sporty Sam',
                 style: Theme.of(context).textTheme.display1,
               ),
+              Container(
+                height: 200,
+                child: PieChart(
+                  dataMap: dataMap,
+                  animationDuration: Duration(milliseconds: 800),
+                  chartLegendSpacing: 32.0,
+                  chartRadius: MediaQuery.of(context).size.width / 2.7,
+                  showChartValuesInPercentage: false,
+                  showChartValues: true,
+                  showChartValuesOutside: true,
+                  chartValueBackgroundColor: Colors.grey[200],
+                  colorList: colorList,
+                  showLegends: false,
+                  legendPosition: LegendPosition.right,
+                  decimalPlaces: 1,
+                  showChartValueLabel: true,
+                  initialAngle: 0,
+                  chartValueStyle: defaultChartValueStyle.copyWith(
+                    color: Colors.blueGrey[900].withOpacity(0.9),
+                  ),
+                  chartType: ChartType.ring,
+                ),
+              ),
               Text(
                 widget.userId,
                 //style: Theme.of(context).textTheme.display1,
@@ -225,8 +300,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          ActivityHistoryPage(userId: widget.userId,)));
+                                      builder: (context) => ActivityHistoryPage(
+                                            userId: widget.userId,
+                                          )));
                             },
                           ),
 //                          InkWell(
@@ -258,7 +334,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ActivityHistoryPage(userId: widget.userId)));
+                                builder: (context) => ActivityHistoryPage(
+                                    userId: widget.userId)));
                       },
                     );
                   },
