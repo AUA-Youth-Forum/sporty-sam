@@ -290,7 +290,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         petMovement = "idle";
                       else
                         petMovement = "success";
-
+                      setChartData();
                       return new Column(
                         children: <Widget>[
                           InkWell(
