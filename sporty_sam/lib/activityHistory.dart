@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
-import './assets/icons/custom_icons_icons.dart';
+//import './assets/icons/custom_icons_icons.dart';
 import 'dart:math';
+import 'package:pie_chart/pie_chart.dart';
+
 
 class ActivityHistoryPage extends StatefulWidget {
   ActivityHistoryPage({
@@ -55,18 +57,75 @@ class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
       }
     });
   }
+//
+  //pie chart
+  Map<String, double> dataMap = Map();
+  List<Color> colorList = [
+    Colors.green,
+    Colors.blue,
+//    Colors.purple,
+    Colors.red,
+    Colors.brown
+  ];
+  void setChartData() async {
+    double walk = 0, bicycle = 0, run = 0, still = 0, unknown = 0;
+    var result = await Firestore.instance
+        .collection('users')
+        .document(widget.userId)
+        .collection('healthHistory')
+        .document(dateOnly(historyDate)
+        .toString())
+        .collection('activity')
+        .getDocuments();
+    result.documents.forEach((res) {
+//      print(res.data);
+      Duration actLength = DateTime.parse(res.data["end"])
+          .difference(DateTime.parse(res.data["start"]));
+      if (res.data["type"] == "WALKING")
+        walk += actLength.inSeconds;
+      else if (res.data["type"] == "RUNNING")
+        run += actLength.inSeconds;
+      else if (res.data["type"] == "ON_BICYCLE")
+        bicycle += actLength.inSeconds;
+//      else if (res.data["type"] == "UNKNOWN")
+//        unknown += actLength.inSeconds;
+      else
+        still += actLength.inSeconds;
+    });
+    setState(() {
+      dataMap = {
+        "Walking": walk,
+        "Running": run,
+        "Cycling": bicycle,
+        "Free": still,
+//        "Unknown": unknown
+      };
+    });
 
+//    dataMap.putIfAbsent("WALKING", () => walk);
+//    dataMap.putIfAbsent("RUNNING", () => run);
+//    dataMap.putIfAbsent("ON_BICYCLE", () => bicycle);
+//    dataMap.putIfAbsent("STILL", () => still);
+//    dataMap.putIfAbsent("UNKNOWN", () => unknown);
+  }
   @override
   void initState() {
     super.initState();
     historyDate = dateOnly(DateTime.now());
+    //pie chart
+    dataMap.putIfAbsent("Walking", () => 15);
+    dataMap.putIfAbsent("Running", () => 5);
+    dataMap.putIfAbsent("Cycling", () => 5);
+    dataMap.putIfAbsent("Free", () => 5);
+//    dataMap.putIfAbsent("UNKNOWN", () => 5);
+    setChartData();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('My Activity History'),
+          title: Text('My Daily Activity History'),
         ),
         body: Center(
           child: Column(
@@ -84,11 +143,12 @@ class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
                       minTime: DateTime(2000, 1, 1),
                       //maxTime: DateTime(2022, 12, 31),
                       onConfirm: (date) {
-                    setDatabaseDate(dateOnly(date));
-                    setState(() {
-                      historyDate = dateOnly(date);
-                    });
-                  }, currentTime: historyDate, locale: LocaleType.en);
+                        setDatabaseDate(dateOnly(date));
+                        setState(() {
+                          historyDate = dateOnly(date);
+                        });
+                        setChartData();
+                      }, currentTime: historyDate, locale: LocaleType.en);
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -129,6 +189,32 @@ class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
                   ),
                 ),
                 color: Colors.white,
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                height: 200,
+                child: PieChart(
+                  dataMap: dataMap,
+                  animationDuration: Duration(milliseconds: 800),
+                  chartLegendSpacing: 32.0,
+                  chartRadius: MediaQuery.of(context).size.width / 2.7,
+                  showChartValuesInPercentage: false,
+                  showChartValues: true,
+                  showChartValuesOutside: true,
+                  chartValueBackgroundColor: Colors.grey[200],
+                  colorList: colorList,
+                  showLegends: false,
+                  legendPosition: LegendPosition.right,
+                  decimalPlaces: 1,
+                  showChartValueLabel: true,
+                  initialAngle: 0,
+                  chartValueStyle: defaultChartValueStyle.copyWith(
+                    color: Colors.blueGrey[900].withOpacity(0.9),
+                  ),
+                  chartType: ChartType.ring,
+                ),
               ),
               SizedBox(
                 height: 15,

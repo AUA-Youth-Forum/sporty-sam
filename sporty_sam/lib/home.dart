@@ -35,12 +35,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  ////activity timeline
+
+  Activity preAct = new Activity("UNKNOWN", 100);
+  DateTime startAct = DateTime.now();
+  DateTime endAct = DateTime.now();
+
   //pie chart
   Map<String, double> dataMap = Map();
   List<Color> colorList = [
     Colors.green,
     Colors.blue,
-    Colors.purple,
+//    Colors.purple,
     Colors.red,
     Colors.brown
   ];
@@ -97,48 +104,55 @@ class _MyHomePageState extends State<MyHomePage> {
         .collection('users')
         .document(widget.userId)
         .collection('healthHistory')
-        .document(DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).toString())
+        .document(DateTime(
+                DateTime.now().year, DateTime.now().month, DateTime.now().day)
+            .toString())
         .collection('activity')
         .getDocuments();
     result.documents.forEach((res) {
 //      print(res.data);
       Duration actLength = DateTime.parse(res.data["end"])
           .difference(DateTime.parse(res.data["start"]));
-      if (res.data["type"] == "WALKING") walk += actLength.inSeconds;
-      else if (res.data["type"] == "RUNNING") run += actLength.inSeconds;
-      else if (res.data["type"] == "ON_BICYCLE") bicycle += actLength.inSeconds;
-      else if (res.data["type"] == "UNKNOWN") unknown += actLength.inSeconds;
-      else  still += actLength.inSeconds;
-
+      if (res.data["type"] == "WALKING")
+        walk += actLength.inSeconds;
+      else if (res.data["type"] == "RUNNING")
+        run += actLength.inSeconds;
+      else if (res.data["type"] == "ON_BICYCLE")
+        bicycle += actLength.inSeconds;
+//      else if (res.data["type"] == "UNKNOWN")
+//        unknown += actLength.inSeconds;
+      else
+        still += actLength.inSeconds;
     });
     setState(() {
-      dataMap= {"WALKING": walk, "RUNNING": run, "ON_BICYCLE": bicycle, "STILL": still, "UNKNOWN": unknown};
+      dataMap = {
+        "Walking": walk,
+        "Running": run,
+        "Cycling": bicycle,
+        "Free": still,
+//        "UNKNOWN": unknown
+      };
+      print("chart update");
     });
-
-//    dataMap.putIfAbsent("WALKING", () => walk);
-//    dataMap.putIfAbsent("RUNNING", () => run);
-//    dataMap.putIfAbsent("ON_BICYCLE", () => bicycle);
-//    dataMap.putIfAbsent("STILL", () => still);
-//    dataMap.putIfAbsent("UNKNOWN", () => unknown);
-
 
   }
 
-  //bool _isEmailVerified = false;
+  bool _isEmailVerified = false;
+
   @override
   void initState() {
     super.initState();
     setDatabaseDate();
     //_checkEmailVerification();
+
     //pie chart
-    dataMap.putIfAbsent("WALKING", () => 15);
-    dataMap.putIfAbsent("RUNNING", () => 5);
-    dataMap.putIfAbsent("ON_BICYCLE", () => 5);
-    dataMap.putIfAbsent("STILL", () => 5);
-    dataMap.putIfAbsent("UNKNOWN", () => 5);
+    dataMap.putIfAbsent("Walking", () => 15);
+    dataMap.putIfAbsent("Running", () => 5);
+    dataMap.putIfAbsent("Cycling", () => 5);
+    dataMap.putIfAbsent("Free", () => 5);
+//    dataMap.putIfAbsent("UNKNOWN", () => 5);
     setChartData();
 
-//    print(dataMap);
   }
 
   //  void _checkEmailVerification() async {
@@ -203,10 +217,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //  }
 
   Widget build(BuildContext context) {
-    ////activity timeline
-    Activity preAct = new Activity("UNKNOWN", 100);
-    DateTime startAct = DateTime.now();
-    DateTime endAct = DateTime.now();
+
     //
     String petMovement = "fail";
     final controller = FabCircularMenuController();
@@ -223,49 +234,58 @@ class _MyHomePageState extends State<MyHomePage> {
                 'Welcome to Sporty Sam',
                 style: Theme.of(context).textTheme.display1,
               ),
-              Container(
-                height: 200,
-                child: PieChart(
-                  dataMap: dataMap,
-                  animationDuration: Duration(milliseconds: 800),
-                  chartLegendSpacing: 32.0,
-                  chartRadius: MediaQuery.of(context).size.width / 2.7,
-                  showChartValuesInPercentage: false,
-                  showChartValues: true,
-                  showChartValuesOutside: true,
-                  chartValueBackgroundColor: Colors.grey[200],
-                  colorList: colorList,
-                  showLegends: false,
-                  legendPosition: LegendPosition.right,
-                  decimalPlaces: 1,
-                  showChartValueLabel: true,
-                  initialAngle: 0,
-                  chartValueStyle: defaultChartValueStyle.copyWith(
-                    color: Colors.blueGrey[900].withOpacity(0.9),
+              InkWell(
+                child: Container(
+                  height: 200,
+                  child: PieChart(
+                    dataMap: dataMap,
+                    animationDuration: Duration(milliseconds: 800),
+                    chartLegendSpacing: 32.0,
+                    chartRadius: MediaQuery.of(context).size.width / 2.7,
+                    showChartValuesInPercentage: false,
+                    showChartValues: true,
+                    showChartValuesOutside: true,
+                    chartValueBackgroundColor: Colors.grey[200],
+                    colorList: colorList,
+                    showLegends: false,
+                    legendPosition: LegendPosition.right,
+                    decimalPlaces: 1,
+                    showChartValueLabel: true,
+                    initialAngle: 0,
+                    chartValueStyle: defaultChartValueStyle.copyWith(
+                      color: Colors.blueGrey[900].withOpacity(0.9),
+                    ),
+                    chartType: ChartType.ring,
                   ),
-                  chartType: ChartType.ring,
                 ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ActivityHistoryPage(
+                            userId: widget.userId,
+                          )));
+                },
               ),
-              Text(
-                widget.userId,
-                //style: Theme.of(context).textTheme.display1,
-              ),
+//              Text(
+//                widget.userId,
+//                //style: Theme.of(context).textTheme.display1,
+//              ),
               //activity
               new Center(
                 child: StreamBuilder(
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       Activity act = snapshot.data;
-                      print(preAct.type + act.type);
+//                      print(preAct.type + act.type);
                       if (act.type != preAct.type) {
                         endAct = DateTime.now();
-                        print(startAct.toString() +
-                            preAct.type +
-                            endAct.toString());
+                        print("activity change"+ preAct.type+act.type);
                         //calc activity duration
                         Duration actLength = endAct.difference(startAct);
                         if (actLength.inSeconds > 2) {
                           //send to database
+                          print("new activity saved");
                           Firestore.instance
                               .collection('users')
                               .document(widget.userId)
@@ -278,11 +298,13 @@ class _MyHomePageState extends State<MyHomePage> {
                             "end": endAct.toString(),
                             "type": preAct.type
                           });
+                          setChartData();
                           //
                         }
+
                         startAct = endAct;
                         preAct = act;
-                        print("preact update:" + preAct.type);
+                        print("activity updated"+ preAct.type+act.type);
                       }
                       if (act.type == 'STILL')
                         petMovement = "fail";
@@ -290,54 +312,37 @@ class _MyHomePageState extends State<MyHomePage> {
                         petMovement = "idle";
                       else
                         petMovement = "success";
-                      setChartData();
+
                       return new Column(
                         children: <Widget>[
+                          Text(
+                              "Your phone is to ${act.confidence}% ${act.type}!"),
                           InkWell(
-                            child: Text(
-                                "Your phone is to ${act.confidence}% ${act.type}!"),
+                            child: Container(
+                              height: 300,
+                              width: 300,
+                              child: FlareActor(
+                                "lib/assets/animations/teddy.flr",
+                                animation: petMovement,
+                                //color: Colors.red
+                              ),
+                            ),
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => ActivityHistoryPage(
-                                            userId: widget.userId,
-                                          )));
+                                    builder: (context) => PetShop(),
+                                  ));
                             },
                           ),
-//                          InkWell(
-//                            child: Container(
-//                              height: 300,
-//                              width: 300,
-//                              child: FlareActor(
-//                                "lib/assets/animations/teddy.flr",
-//                                animation: petMovement,
-//                                //color: Colors.red
-//                              ),
-//                            ),
-//                            onTap: () {
-//                              Navigator.push(
-//                                  context,
-//                                  MaterialPageRoute(
-//                                    builder: (context) => PetShop(),
-//                                  ));
-//                            },
-//                          ),
                         ],
                       );
 //                      return Text("Your phone is to ${act.confidence}% ${act.type}!");
                     }
 
-                    return InkWell(
-                      child: Text("No activity detected."),
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ActivityHistoryPage(
-                                    userId: widget.userId)));
-                      },
-                    );
+                    return Text("No activity detected.");
+
+
                   },
                   stream: ActivityRecognition.activityUpdates(),
                 ),
