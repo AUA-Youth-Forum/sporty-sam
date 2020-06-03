@@ -81,7 +81,7 @@ class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
 //      print(res.data);
       Duration actLength = DateTime.parse(res.data["end"])
           .difference(DateTime.parse(res.data["start"]));
-      if (res.data["type"] == "WALKING")
+      if ((res.data["type"] == "WALKING") || (res.data["type"] =="ON_FOOT"))
         walk += actLength.inSeconds;
       else if (res.data["type"] == "RUNNING")
         run += actLength.inSeconds;
