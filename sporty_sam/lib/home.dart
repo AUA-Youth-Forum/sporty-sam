@@ -51,6 +51,8 @@ class _MyHomePageState extends State<MyHomePage> {
     Colors.red,
     Colors.brown
   ];
+//
+  String petMovement = "fail";
 
   signOut() async {
     try {
@@ -113,7 +115,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //      print(res.data);
       Duration actLength = DateTime.parse(res.data["end"])
           .difference(DateTime.parse(res.data["start"]));
-      if ((res.data["type"] == "WALKING") || (res.data["type"] =="ON_FOOT"))
+      if ((res.data["type"] == "WALKING") || (res.data["type"] == "ON_FOOT"))
         walk += actLength.inSeconds;
       else if (res.data["type"] == "RUNNING")
         run += actLength.inSeconds;
@@ -134,7 +136,6 @@ class _MyHomePageState extends State<MyHomePage> {
       };
       print("chart update");
     });
-
   }
 
   bool _isEmailVerified = false;
@@ -152,7 +153,6 @@ class _MyHomePageState extends State<MyHomePage> {
     dataMap.putIfAbsent("Free", () => 5);
 //    dataMap.putIfAbsent("UNKNOWN", () => 5);
     setChartData();
-
   }
 
   //  void _checkEmailVerification() async {
@@ -217,9 +217,6 @@ class _MyHomePageState extends State<MyHomePage> {
 //  }
 
   Widget build(BuildContext context) {
-
-    //
-    String petMovement = "fail";
     final controller = FabCircularMenuController();
     return Scaffold(
         body: Center(
@@ -236,35 +233,45 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               InkWell(
                 child: Container(
+                  width: 200,
                   height: 200,
-                  child: PieChart(
-                    dataMap: dataMap,
-                    animationDuration: Duration(milliseconds: 800),
-                    chartLegendSpacing: 32.0,
-                    chartRadius: MediaQuery.of(context).size.width / 2.7,
-                    showChartValuesInPercentage: false,
-                    showChartValues: true,
-                    showChartValuesOutside: true,
-                    chartValueBackgroundColor: Colors.grey[200],
-                    colorList: colorList,
-                    showLegends: false,
-                    legendPosition: LegendPosition.right,
-                    decimalPlaces: 1,
-                    showChartValueLabel: true,
-                    initialAngle: 0,
-                    chartValueStyle: defaultChartValueStyle.copyWith(
-                      color: Colors.blueGrey[900].withOpacity(0.9),
+                  child: Stack(children: <Widget>[
+                    Center(
+                      child: Text(
+                        "Daily Progress",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
                     ),
-                    chartType: ChartType.ring,
-                  ),
+                    PieChart(
+                      dataMap: dataMap,
+                      animationDuration: Duration(milliseconds: 800),
+                      chartLegendSpacing: 32.0,
+                      chartRadius: MediaQuery.of(context).size.width / 2.7,
+                      showChartValuesInPercentage: false,
+                      showChartValues: true,
+                      showChartValuesOutside: true,
+                      chartValueBackgroundColor: Colors.grey[200],
+                      colorList: colorList,
+                      showLegends: false,
+                      legendPosition: LegendPosition.right,
+                      decimalPlaces: 1,
+                      showChartValueLabel: true,
+                      initialAngle: 0,
+                      chartValueStyle: defaultChartValueStyle.copyWith(
+                        color: Colors.blueGrey[900].withOpacity(0.9),
+                      ),
+                      chartType: ChartType.ring,
+                    ),
+                  ]),
                 ),
                 onTap: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => ActivityHistoryPage(
-                            userId: widget.userId,
-                          )));
+                                userId: widget.userId,
+                              )));
                 },
               ),
 //              Text(
@@ -280,7 +287,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //                      print(preAct.type + act.type);
                       if (act.type != preAct.type) {
                         endAct = DateTime.now();
-                        print("activity change"+ preAct.type+act.type);
+                        print("activity change" + preAct.type + act.type);
                         //calc activity duration
                         Duration actLength = endAct.difference(startAct);
                         if (actLength.inSeconds > 2) {
@@ -304,7 +311,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
                         startAct = endAct;
                         preAct = act;
-                        print("activity updated"+ preAct.type+act.type);
+                        print("activity updated" + preAct.type + act.type);
                       }
                       if (act.type == 'STILL')
                         petMovement = "fail";
@@ -340,9 +347,29 @@ class _MyHomePageState extends State<MyHomePage> {
 //                      return Text("Your phone is to ${act.confidence}% ${act.type}!");
                     }
 
-                    return Text("No activity detected.");
-
-
+                    return Column(
+                      children: <Widget>[
+                        Text("No activity detected."),
+                        InkWell(
+                          child: Container(
+                            height: 300,
+                            width: 300,
+                            child: FlareActor(
+                              "lib/assets/animations/teddy.flr",
+                              animation: petMovement,
+                              //color: Colors.red
+                            ),
+                          ),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PetShop(),
+                                ));
+                          },
+                        )
+                      ],
+                    );
                   },
                   stream: ActivityRecognition.activityUpdates(),
                 ),
