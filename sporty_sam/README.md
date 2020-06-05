@@ -23,3 +23,6 @@ https://medium.com/@atul.sharma_94062/how-to-use-cloud-firestore-with-flutter-e6
 https://heartbeat.fritz.ai/using-firebases-cloud-firestore-in-flutter-79a79ec5303a
 https://flutterawesome.com/beautytextfield-made-with-flutter/
 https://simpleactivity435203168.wordpress.com/2019/10/05/firebase-authentication-with-flutter/
+
+https://pub.dev/packages/sensors
+https://pub.dev/packages/activity_recognition_flutter#-installing-tab-
