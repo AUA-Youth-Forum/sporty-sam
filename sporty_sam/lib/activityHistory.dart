@@ -5,7 +5,6 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'dart:math';
 import 'package:pie_chart/pie_chart.dart';
 
-
 class ActivityHistoryPage extends StatefulWidget {
   ActivityHistoryPage({
     Key key,
@@ -57,6 +56,7 @@ class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
       }
     });
   }
+
 //
   //pie chart
   Map<String, double> dataMap = Map();
@@ -73,15 +73,14 @@ class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
         .collection('users')
         .document(widget.userId)
         .collection('healthHistory')
-        .document(dateOnly(historyDate)
-        .toString())
+        .document(dateOnly(historyDate).toString())
         .collection('activity')
         .getDocuments();
     result.documents.forEach((res) {
 //      print(res.data);
       Duration actLength = DateTime.parse(res.data["end"])
           .difference(DateTime.parse(res.data["start"]));
-      if ((res.data["type"] == "WALKING") || (res.data["type"] =="ON_FOOT"))
+      if ((res.data["type"] == "WALKING") || (res.data["type"] == "ON_FOOT"))
         walk += actLength.inSeconds;
       else if (res.data["type"] == "RUNNING")
         run += actLength.inSeconds;
@@ -108,6 +107,7 @@ class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
 //    dataMap.putIfAbsent("STILL", () => still);
 //    dataMap.putIfAbsent("UNKNOWN", () => unknown);
   }
+
   @override
   void initState() {
     super.initState();
@@ -143,12 +143,12 @@ class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
                       minTime: DateTime(2000, 1, 1),
                       //maxTime: DateTime(2022, 12, 31),
                       onConfirm: (date) {
-                        setDatabaseDate(dateOnly(date));
-                        setState(() {
-                          historyDate = dateOnly(date);
-                        });
-                        setChartData();
-                      }, currentTime: historyDate, locale: LocaleType.en);
+                    setDatabaseDate(dateOnly(date));
+                    setState(() {
+                      historyDate = dateOnly(date);
+                    });
+                    setChartData();
+                  }, currentTime: historyDate, locale: LocaleType.en);
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -240,17 +240,39 @@ class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
                           return new ListView(
                             children: snapshot.data.documents
                                 .map((DocumentSnapshot document) {
+                              DateTime start =
+                                  DateTime.parse(document["start"]);
+                              Duration actLength =
+                                  DateTime.parse(document["end"]).difference(
+                                      DateTime.parse(document["start"]));
                               return new Card(
                                 elevation: 3.0,
                                 child: Row(
                                   children: <Widget>[
                                     Container(
-//                                      width: MediaQuery.of(context).size.width,
+                                      width: MediaQuery.of(context).size.width -
+                                          15,
 //                                      height: 150,
                                       padding: EdgeInsets.all(10.0),
-                                      child: Column(
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
                                         children: <Widget>[
-                                          Text(document['start'],
+                                          Text(
+                                              "Time " +
+                                                  start.hour
+                                                      .toString()
+                                                      .padLeft(2, '0') +
+                                                  " : " +
+                                                  start.minute
+                                                      .toString()
+                                                      .padLeft(2, '0') +
+                                                  " : " +
+                                                  start.second
+                                                      .toString()
+                                                      .padLeft(2, '0'),
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 15),
@@ -260,7 +282,12 @@ class _ActivityHistoryPageState extends State<ActivityHistoryPage> {
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 15),
                                               textAlign: TextAlign.left),
-                                          Text(document['end'],
+                                          Text(
+                                              actLength.inMinutes.toString() +
+                                                  "min " +
+                                                  (actLength.inSeconds % 60)
+                                                      .toString() +
+                                                  "s",
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 15),
