@@ -54,7 +54,8 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 //
   String petMovement = "fail";
-
+//
+  String userActCato;
   signOut() async {
     try {
       await widget.auth.signOut();
@@ -154,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
     dataMap.putIfAbsent("Free", () => 5);
 //    dataMap.putIfAbsent("UNKNOWN", () => 5);
     setChartData();
+    Firestore.instance.collection("users").document(widget.userId).get().then((value) => userActCato=value["activityCategory"]);
   }
 
   //  void _checkEmailVerification() async {
@@ -469,7 +471,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icon(Icons.golf_course),
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => DailyQuestPage()));
+                        MaterialPageRoute(builder: (context) => DailyQuestPage(userId: widget.userId,userActCato: userActCato,)));
                   },
                   iconSize: 48.0,
                   color: Colors.black),
