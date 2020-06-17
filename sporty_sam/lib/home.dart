@@ -471,7 +471,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   icon: Icon(Icons.golf_course),
                   onPressed: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => DailyQuestPage(userId: widget.userId,userActCato: userActCato,)));
+                        MaterialPageRoute(builder: (context) => DailyQuestPage(userId: widget.userId,userActCato: userActCato,dataMap: dataMap,)));
                   },
                   iconSize: 48.0,
                   color: Colors.black),

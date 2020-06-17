@@ -3,14 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
 class DailyQuestPage extends StatefulWidget {
   DailyQuestPage({
     Key key,
     this.userId,
     this.userActCato,
+    this.dataMap,
   }) : super(key: key);
   final String userId;
   final String userActCato;
+  final Map<String, double> dataMap;
   @override
   _DailyQuestPageState createState() => _DailyQuestPageState();
 }
@@ -18,9 +21,11 @@ class DailyQuestPage extends StatefulWidget {
 class _DailyQuestPageState extends State<DailyQuestPage> {
   String questDay = "2";
   String newDate;
+  bool taskComplete;
   DateTime dateOnly(DateTime oldDate) {
     return DateTime(oldDate.year, oldDate.month, oldDate.day);
   }
+
   @override
   void initState() {
     super.initState();
@@ -32,40 +37,56 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
         .document("setting")
         .get()
         .then((value) {
-      if(value["date"]==""){
+      if (value["date"] == "") {
         setState(() {
-          questDay="1";
-          newDate=dateOnly(DateTime.now()).toString();
+          questDay = "1";
+          newDate = dateOnly(DateTime.now()).toString();
         });
-
-      }
-      else if(value["date"]==dateOnly(DateTime.now()).toString()){
-        setState(() {
-          questDay = value["day"].toString();
-          newDate=dateOnly(DateTime.now()).toString();
-        });
-      }
-      else{
-        
-        if(value["complete"]==true){
+      } else if (value["date"] == dateOnly(DateTime.now()).toString()) {
+        if (value["complete"] == true) {
           setState(() {
-            questDay=((value["day"]+1)%30).toString();
-            newDate=dateOnly(DateTime.now()).toString();
+            questDay = value["day"].toString();
+            newDate = dateOnly(DateTime.now()).toString();
+            taskComplete = true;
+          });
+        } else {
+          setState(() {
+            questDay = value["day"].toString();
+            newDate = dateOnly(DateTime.now()).toString();
           });
         }
-        else{
+      } else {
+        if (value["complete"] == true) {
           setState(() {
-            questDay=value["day"].toString();
-            newDate=dateOnly(DateTime.now()).toString();
+            questDay = ((value["day"] + 1) % 30).toString();
+            newDate = dateOnly(DateTime.now()).toString();
+            taskComplete = false;
+          });
+        } else {
+          setState(() {
+            questDay = value["day"].toString();
+            newDate = dateOnly(DateTime.now()).toString();
           });
         }
       }
-      Firestore.instance.collection("users")
+      Firestore.instance
+          .collection("dailyQuest")
+          .document(widget.userActCato)
+          .collection(questDay).document("1").get().then((value) {
+            if((value["amount"]*60)<=widget.dataMap[value["activity"]]){
+              setState(() {
+                taskComplete=true;
+              });
+            }
+      });
+      Firestore.instance
+          .collection("users")
           .document(widget.userId)
           .collection("DailyQuest")
-          .document("setting").updateData({"date":newDate,"day":questDay});
-
+          .document("setting")
+          .updateData({"date": newDate, "day": questDay,"complete":taskComplete});
     });
+//    print(widget.dataMap["Walking"]);
   }
 
   Widget tasks(String task) {
@@ -136,7 +157,9 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
 //                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(height: 50,),
+                  SizedBox(
+                    height: 50,
+                  ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width / 2,
                     child: Text(
@@ -161,7 +184,7 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
-                        print(questDay);
+//                        print(questDay);
                         if (snapshot.hasError)
                           return new Text('Error: ${snapshot.error}');
                         switch (snapshot.connectionState) {
@@ -181,7 +204,9 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
                       },
                     ),
                   ),
-                  SizedBox(height: 100,),
+                  SizedBox(
+                    height: 100,
+                  ),
                   Center(
                     child: StreamBuilder<QuerySnapshot>(
                       stream: Firestore.instance
