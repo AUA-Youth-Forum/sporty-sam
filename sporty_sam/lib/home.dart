@@ -10,6 +10,7 @@ import 'dietTracker.dart';
 import 'myHealth.dart';
 import 'challenge.dart';
 import 'myProfile.dart';
+import 'dailyQuest.dart';
 
 import 'package:sporty_sam/services/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -461,6 +462,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => HealthTips()));
+                  },
+                  iconSize: 48.0,
+                  color: Colors.black),
+              IconButton(
+                  icon: Icon(Icons.golf_course),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => DailyQuestPage()));
                   },
                   iconSize: 48.0,
                   color: Colors.black),
