@@ -224,15 +224,22 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         body: Center(
       child: Stack(
-        alignment: Alignment.center,
+//        alignment: Alignment.center,
         children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("lib/assets/back1.jpg"),
+                  fit: BoxFit.fitHeight,
+                )),
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
                 'Welcome to Sporty Sam',
-                style: Theme.of(context).textTheme.display1,
+                style: Theme.of(context).textTheme.headline4,
               ),
               InkWell(
                 child: Container(
