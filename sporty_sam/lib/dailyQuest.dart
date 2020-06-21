@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 
 class DailyQuestPage extends StatefulWidget {
   DailyQuestPage({
@@ -21,7 +21,7 @@ class DailyQuestPage extends StatefulWidget {
 class _DailyQuestPageState extends State<DailyQuestPage> {
   String questDay = "2";
   String newDate;
-  bool taskComplete;
+  bool taskComplete = false;
   DateTime dateOnly(DateTime oldDate) {
     return DateTime(oldDate.year, oldDate.month, oldDate.day);
   }
@@ -72,24 +72,30 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
       Firestore.instance
           .collection("dailyQuest")
           .document(widget.userActCato)
-          .collection(questDay).document("1").get().then((value) {
-            if((value["amount"]*60)<=widget.dataMap[value["activity"]]){
-              setState(() {
-                taskComplete=true;
-              });
-            }
+          .collection(questDay)
+          .document("1")
+          .get()
+          .then((value) {
+        if ((value["amount"] * 60) <= widget.dataMap[value["activity"]]) {
+          setState(() {
+            taskComplete = true;
+          });
+        }
       });
-      Firestore.instance
-          .collection("users")
-          .document(widget.userId)
-          .collection("DailyQuest")
-          .document("setting")
-          .updateData({"date": newDate, "day": questDay,"complete":taskComplete});
     });
+    print("bb");
 //    print(widget.dataMap["Walking"]);
   }
 
-  Widget tasks(String task) {
+  Widget tasks(String task, String actType, int amount) {
+    double currAmount = widget.dataMap[actType] / 60;
+    String midText;
+    if (amount <= 60) {
+      midText = currAmount.toStringAsFixed(1) + "\nmins";
+    } else {
+      midText = (currAmount / 60).toStringAsFixed(1) + "\nhrs";
+    }
+
     return new Card(
       margin: EdgeInsets.only(top: 0, left: 30, right: 30, bottom: 10),
       shape: RoundedRectangleBorder(
@@ -106,13 +112,18 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
             Transform.translate(
               offset: Offset(0, 0),
               child: Container(
-                width: 64.0,
-                height: 64.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.elliptical(32.0, 32.0)),
-                  color: const Color(0xffffffff),
-                  border:
-                      Border.all(width: 1.0, color: const Color(0xff707070)),
+                width: 70.0,
+                height: 70.0,
+                child: new CircularPercentIndicator(
+                  radius: 60,
+                  lineWidth: 5,
+                  percent: (currAmount / amount),
+                  progressColor: Colors.purple,
+                  center: new Text(
+                    midText,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
               ),
             ),
@@ -185,6 +196,16 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
 //                        print(questDay);
+                        Firestore.instance
+                            .collection("users")
+                            .document(widget.userId)
+                            .collection("DailyQuest")
+                            .document("setting")
+                            .updateData({
+                          "date": newDate,
+                          "day": questDay,
+                          "complete": taskComplete
+                        });
                         if (snapshot.hasError)
                           return new Text('Error: ${snapshot.error}');
                         switch (snapshot.connectionState) {
@@ -194,7 +215,8 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
                             return new ListView(
                               children: snapshot.data.documents
                                   .map((DocumentSnapshot document) {
-                                return tasks(document["task"]);
+                                return tasks(document["task"],
+                                    document["activity"], document["amount"]);
                               }).toList(),
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
@@ -208,23 +230,54 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
                     height: 100,
                   ),
                   Center(
-                    child: StreamBuilder<QuerySnapshot>(
+                    child: StreamBuilder<DocumentSnapshot>(
                       stream: Firestore.instance
                           .collection("dailyQuest")
                           .document(widget.userActCato)
                           .collection(questDay)
+                          .document("1")
                           .snapshots(),
                       builder: (BuildContext context,
-                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                          AsyncSnapshot<DocumentSnapshot> snapshot) {
+                        DocumentSnapshot goalDetails = snapshot.data;
                         print(questDay);
+
                         if (snapshot.hasError)
                           return new Text('Error: ${snapshot.error}');
                         switch (snapshot.connectionState) {
                           case ConnectionState.waiting:
                             return new Text('Loading');
                           default:
-                            return new Card(
-                              child: Text("Did you know!"),
+                            return Container(
+                              width: MediaQuery.of(context).size.width * 3 / 4,
+                              child: new Card(
+                                color: Colors.amber[300],
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        color: Colors.brown, width: 8),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  elevation: 20,
+                                  child: Padding(
+                                    padding: EdgeInsets.all(15),
+                                      child: Column(
+                                    children: <Widget>[
+                                      Text(
+                                        "Did you know !",
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Text(
+                                        goalDetails["tip"],
+                                        style: TextStyle(
+                                          fontSize: 18,fontStyle: FontStyle.italic
+                                        ),
+                                        textAlign: TextAlign.justify,
+                                      ),
+                                    ],
+                                  ))),
                             );
                         }
                       },
