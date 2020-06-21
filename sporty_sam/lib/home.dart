@@ -15,6 +15,7 @@ import 'package:sporty_sam/services/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:workmanager/workmanager.dart';
 
 import 'dart:async';
 
@@ -22,6 +23,18 @@ import 'myProfile.dart';
 
 import 'package:activity_recognition_flutter/activity_recognition_flutter.dart';
 
+/////////////////////////
+const actRecognitionTask = "actRecognitionTask";
+void callbackDispatcher() {
+  Workmanager.executeTask((task, inputData) async {
+    print("$actRecognitionTask was executed");
+    Stream activityBack = ActivityRecognition.activityUpdates();
+    activityBack.listen((event) {print(event);});
+    print(activityBack);
+    return Future.value(true);
+  });
+}
+/////////////////////////
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.auth, this.userId, this.logoutCallback})
       : super(key: key);
@@ -153,6 +166,10 @@ class _MyHomePageState extends State<MyHomePage> {
     dataMap.putIfAbsent("Free", () => 5);
 //    dataMap.putIfAbsent("UNKNOWN", () => 5);
     setChartData();
+    Workmanager.initialize(
+      callbackDispatcher,
+      isInDebugMode: true,
+    );
   }
 
   //  void _checkEmailVerification() async {
@@ -227,6 +244,23 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              RaisedButton(
+                child: Text("back"),
+                onPressed: (){
+                  Workmanager.registerPeriodicTask(
+                    "1",
+                    actRecognitionTask,
+                    frequency: Duration(minutes: 15),
+                  );
+                },
+              ),
+              RaisedButton(
+                child: Text("cancel"),
+                onPressed: () async {
+                  await Workmanager.cancelAll();
+                  print('Cancel all tasks completed');
+                },
+              ),
               Text(
                 'Welcome to Sporty Sam',
                 style: Theme.of(context).textTheme.display1,
