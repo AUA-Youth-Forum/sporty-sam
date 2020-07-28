@@ -38,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   ////activity timeline
 
-  Activity preAct = new Activity("UNKNOWN", 100);
+  Activity preAct = new Activity(ActivityType.UNKNOWN, 100);
   DateTime startAct = DateTime.now();
   DateTime endAct = DateTime.now();
 
@@ -287,7 +287,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //                      print(preAct.type + act.type);
                       if (act.type != preAct.type) {
                         endAct = DateTime.now();
-                        print("activity change" + preAct.type + act.type);
+                        print("activity change" + preAct.toString() + act.toString());
                         //calc activity duration
                         Duration actLength = endAct.difference(startAct);
                         if (actLength.inSeconds > 2) {
@@ -303,7 +303,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               .setData({
                             "start": startAct.toString(),
                             "end": endAct.toString(),
-                            "type": preAct.type
+                            "type": preAct.type.toString().split('.').last
                           });
                           setChartData();
                           //
@@ -311,11 +311,11 @@ class _MyHomePageState extends State<MyHomePage> {
 
                         startAct = endAct;
                         preAct = act;
-                        print("activity updated" + preAct.type + act.type);
+                        print("activity updated" + preAct.toString() + act.toString());
                       }
-                      if (act.type == 'STILL')
+                      if (act.type == ActivityType.STILL)
                         petMovement = "fail";
-                      else if (act.type == 'ON_BICYCLE')
+                      else if (act.type == ActivityType.ON_BICYCLE)
                         petMovement = "idle";
                       else
                         petMovement = "success";
@@ -323,7 +323,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       return new Column(
                         children: <Widget>[
                           Text(
-                              "Your phone is to ${act.confidence}% ${act.type}!"),
+                              "Your phone is to  ${act.toString()}!"),
                           InkWell(
                             child: Container(
                               height: 300,

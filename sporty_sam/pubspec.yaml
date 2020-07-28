@@ -28,7 +28,7 @@ dependencies:
   cached_network_image: ^2.0.0
   flutter_country_picker: ^0.1.6
 #  sensors: ^0.4.2+1
-  activity_recognition_flutter: ^1.2.0
+  activity_recognition_flutter: ^1.2.3
   pie_chart:
     git:
       url: https://github.com/georgeraveen/pie_chart
