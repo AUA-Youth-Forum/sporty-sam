@@ -21,6 +21,7 @@ import 'dart:async';
 import 'myProfile.dart';
 
 import 'package:activity_recognition_flutter/activity_recognition_flutter.dart';
+import 'package:screen_state/screen_state.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.auth, this.userId, this.logoutCallback})
@@ -35,6 +36,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  Screen _screen;
+  StreamSubscription<ScreenStateEvent> _subscription;
 
   ////activity timeline
 
@@ -144,6 +147,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     setDatabaseDate();
+    initPlatformState();
     //_checkEmailVerification();
 
     //pie chart
@@ -154,6 +158,37 @@ class _MyHomePageState extends State<MyHomePage> {
 //    dataMap.putIfAbsent("UNKNOWN", () => 5);
     setChartData();
   }
+  Future<void> initPlatformState() async {
+    startListening();
+  }
+
+  void onData(ScreenStateEvent event) {
+    print("hello");
+    print(event);
+    print("abcd");
+    Firestore.instance
+        .collection('users')
+        .document(widget.userId)
+        .collection('screen')
+        .document("a")
+        .setData({
+      "steps": 44,
+    });
+  }
+
+  void startListening() {
+    _screen = new Screen();
+    try {
+      _subscription = _screen.screenStateStream.listen(onData);
+    } on ScreenStateException catch (exception) {
+      print(exception);
+    }
+  }
+
+  void stopListening() {
+    _subscription.cancel();
+  }
+
 
   //  void _checkEmailVerification() async {
 //    _isEmailVerified = await widget.auth.isEmailVerified();
