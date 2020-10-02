@@ -7,7 +7,7 @@ packages:
       name: activity_recognition_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.2.0"
+    version: "1.2.3"
   archive:
     dependency: transitive
     description:
@@ -389,6 +389,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.24.1"
+  screen_state:
+    dependency: "direct main"
+    description:
+      name: screen_state
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   sky_engine:
     dependency: transitive
     description: flutter
