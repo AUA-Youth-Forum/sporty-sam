@@ -10,6 +10,7 @@ import 'dietTracker.dart';
 import 'myHealth.dart';
 import 'challenge.dart';
 import 'myProfile.dart';
+import 'dailyQuest.dart';
 
 import 'package:sporty_sam/services/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -53,7 +54,8 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 //
   String petMovement = "fail";
-
+//
+  String userActCato;
   signOut() async {
     try {
       await widget.auth.signOut();
@@ -153,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
     dataMap.putIfAbsent("Free", () => 5);
 //    dataMap.putIfAbsent("UNKNOWN", () => 5);
     setChartData();
+    Firestore.instance.collection("users").document(widget.userId).get().then((value) => userActCato=value["activityCategory"]);
   }
 
   //  void _checkEmailVerification() async {
@@ -221,15 +224,22 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         body: Center(
       child: Stack(
-        alignment: Alignment.center,
+//        alignment: Alignment.center,
         children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("lib/assets/back1.jpg"),
+                  fit: BoxFit.fitHeight,
+                )),
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
                 'Welcome to Sporty Sam',
-                style: Theme.of(context).textTheme.display1,
+                style: Theme.of(context).textTheme.headline4,
               ),
               InkWell(
                 child: Container(
@@ -461,6 +471,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => HealthTips()));
+                  },
+                  iconSize: 48.0,
+                  color: Colors.black),
+              IconButton(
+                  icon: Icon(Icons.golf_course),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => DailyQuestPage(userId: widget.userId,userActCato: userActCato,dataMap: dataMap,)));
                   },
                   iconSize: 48.0,
                   color: Colors.black),
