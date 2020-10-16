@@ -14,6 +14,7 @@ class DailyQuestPage extends StatefulWidget {
   final String userId;
   final String userActCato;
   final Map<String, double> dataMap;
+
   @override
   _DailyQuestPageState createState() => _DailyQuestPageState();
 }
@@ -22,6 +23,7 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
   String questDay = "2";
   String newDate;
   bool taskComplete = false;
+
   DateTime dateOnly(DateTime oldDate) {
     return DateTime(oldDate.year, oldDate.month, oldDate.day);
   }
@@ -76,6 +78,7 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
           .document("1")
           .get()
           .then((value) {
+//            print(widget.dataMap);
         if ((value["amount"] * 60) <= widget.dataMap[value["activity"]]) {
           setState(() {
             taskComplete = true;
@@ -83,7 +86,7 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
         }
       });
     });
-    print("bb");
+//    print("bb");
 //    print(widget.dataMap["Walking"]);
   }
 
@@ -163,7 +166,7 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
                 fit: BoxFit.fitHeight,
               )),
             ),
-            Center(
+            SingleChildScrollView(
               child: Column(
 //                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -227,7 +230,7 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
                     ),
                   ),
                   SizedBox(
-                    height: 100,
+                    height: 60,
                   ),
                   Center(
                     child: StreamBuilder<DocumentSnapshot>(
@@ -251,7 +254,7 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
                             return Container(
                               width: MediaQuery.of(context).size.width * 3 / 4,
                               child: new Card(
-                                color: Colors.amber[300],
+                                  color: Colors.amber[300],
                                   shape: RoundedRectangleBorder(
                                     side: BorderSide(
                                         color: Colors.brown, width: 8),
@@ -259,29 +262,32 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
                                   ),
                                   elevation: 20,
                                   child: Padding(
-                                    padding: EdgeInsets.all(15),
+                                      padding: EdgeInsets.all(15),
                                       child: Column(
-                                    children: <Widget>[
-                                      Text(
-                                        "Did you know !",
-                                        style: TextStyle(fontSize: 18),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        goalDetails["tip"],
-                                        style: TextStyle(
-                                          fontSize: 18,fontStyle: FontStyle.italic
-                                        ),
-                                        textAlign: TextAlign.justify,
-                                      ),
-                                    ],
-                                  ))),
+                                        children: <Widget>[
+                                          Text(
+                                            "Did you know !",
+                                            style: TextStyle(fontSize: 18),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            goalDetails["tip"],
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontStyle: FontStyle.italic),
+                                            textAlign: TextAlign.justify,
+                                          ),
+                                        ],
+                                      ))),
                             );
                         }
                       },
                     ),
+                  ),
+                  SizedBox(
+                    height: 40,
                   ),
                 ],
               ),
