@@ -248,9 +248,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Stack(children: <Widget>[
                     Center(
                       child: Text(
-                        "Daily Progress",
+                        "Daily\nProgress",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                            fontWeight: FontWeight.bold, fontSize: 20),textAlign: TextAlign.center,
                       ),
                     ),
                     PieChart(
