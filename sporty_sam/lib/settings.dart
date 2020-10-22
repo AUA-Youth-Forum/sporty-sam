@@ -40,7 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-
+    _birthday = DateTime.now();
   }
 
   @override
@@ -62,14 +62,14 @@ class _SettingsPageState extends State<SettingsPage> {
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<DocumentSnapshot> snapshot) {
-                DocumentSnapshot userdetails = snapshot.data;
-                _birthday = DateTime.parse(userdetails['birthday']);
                 if (snapshot.hasError)
                   return new Text('Error: ${snapshot.error}');
                 switch (snapshot.connectionState) {
                   case ConnectionState.waiting:
                     return new Text('Loading...');
                   default:
+                    DocumentSnapshot userdetails = snapshot.data;
+                    _birthday = DateTime.parse(userdetails['birthday']);
                     return SingleChildScrollView(
                       padding: const EdgeInsets.all(16.0),
                       child: Column(
