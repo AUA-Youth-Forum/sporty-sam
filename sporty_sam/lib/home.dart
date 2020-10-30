@@ -103,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void setChartData() async {
-    double walk = 0, bicycle = 0, run = 0, still = 0, unknown = 0;
+    double walk = 0, bicycle = 0, run = 0, still = 0, unknown = 0, sleep=0;
     var result = await Firestore.instance
         .collection('users')
         .document(widget.userId)
@@ -123,8 +123,8 @@ class _MyHomePageState extends State<MyHomePage> {
         run += actLength.inSeconds;
       else if (res.data["type"] == "ON_BICYCLE")
         bicycle += actLength.inSeconds;
-//      else if (res.data["type"] == "UNKNOWN")
-//        unknown += actLength.inSeconds;
+      else if (res.data["type"] == "sleep")
+        sleep += actLength.inSeconds;
       else
         still += actLength.inSeconds;
     });
@@ -134,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
         "Running": run,
         "Cycling": bicycle,
         "Free": still,
-//        "UNKNOWN": unknown
+        "sleep": sleep
       };
       print("chart update");
     });
@@ -153,6 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
     dataMap.putIfAbsent("Running", () => 5);
     dataMap.putIfAbsent("Cycling", () => 5);
     dataMap.putIfAbsent("Free", () => 5);
+    dataMap.putIfAbsent("sleep", () => 5);
 //    dataMap.putIfAbsent("UNKNOWN", () => 5);
     setChartData();
     Firestore.instance.collection("users").document(widget.userId).get().then((value) => userActCato=value["activityCategory"]);

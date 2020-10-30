@@ -20,9 +20,10 @@ class DailyQuestPage extends StatefulWidget {
 }
 
 class _DailyQuestPageState extends State<DailyQuestPage> {
-  String questDay = "2";
+  int questDay = 2;
   String newDate;
-  bool taskComplete = false;
+  bool taskComplete =false;
+  bool updateScore = false;
 
   DateTime dateOnly(DateTime oldDate) {
     return DateTime(oldDate.year, oldDate.month, oldDate.day);
@@ -31,7 +32,6 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
   @override
   void initState() {
     super.initState();
-
     Firestore.instance
         .collection("users")
         .document(widget.userId)
@@ -41,53 +41,77 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
         .then((value) {
       if (value["date"] == "") {
         setState(() {
-          questDay = "1";
+          questDay = 1;
           newDate = dateOnly(DateTime.now()).toString();
         });
       } else if (value["date"] == dateOnly(DateTime.now()).toString()) {
         if (value["complete"] == true) {
           setState(() {
-            questDay = value["day"].toString();
+            questDay = value["day"];
             newDate = dateOnly(DateTime.now()).toString();
             taskComplete = true;
           });
         } else {
           setState(() {
-            questDay = value["day"].toString();
+            questDay = value["day"];
             newDate = dateOnly(DateTime.now()).toString();
+            taskComplete = false;
           });
         }
       } else {
+//        print(value["complete"]);
+//        print(value["date"]);
+//        print(value["day"]);
         if (value["complete"] == true) {
           setState(() {
-            questDay = ((value["day"] + 1) % 30).toString();
+            questDay = ((value["day"] + 1) % 30);
             newDate = dateOnly(DateTime.now()).toString();
             taskComplete = false;
           });
         } else {
           setState(() {
-            questDay = value["day"].toString();
+            questDay = value["day"];
             newDate = dateOnly(DateTime.now()).toString();
+            taskComplete = false;
           });
         }
       }
       Firestore.instance
           .collection("dailyQuest")
           .document(widget.userActCato)
-          .collection(questDay)
+          .collection(questDay.toString())
           .document("1")
           .get()
           .then((value) {
 //            print(widget.dataMap);
         if ((value["amount"] * 60) <= widget.dataMap[value["activity"]]) {
-          setState(() {
-            taskComplete = true;
-          });
+          if(taskComplete == false){
+            print("aaaa");
+            setState(() {
+              taskComplete = true;
+              updateScore = true;
+            });
+          }
         }
       });
+      Firestore.instance
+          .collection("users")
+          .document(widget.userId)
+          .collection("DailyQuest")
+          .document("setting")
+          .updateData({
+        "date": newDate,
+        "day": questDay,
+        "complete": taskComplete
+      });
+      if(updateScore==true){
+        print("bbbb");
+        Firestore.instance
+            .collection("users")
+            .document(widget.userId).updateData({"myScore":FieldValue.increment(10)});
+
+      }
     });
-//    print("bb");
-//    print(widget.dataMap["Walking"]);
   }
 
   Widget tasks(String task, String actType, int amount) {
@@ -98,7 +122,7 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
     } else {
       midText = (currAmount / 60).toStringAsFixed(1) + "\nhrs";
     }
-
+//  print(currAmount/amount);
     return new Card(
       margin: EdgeInsets.only(top: 0, left: 30, right: 30, bottom: 10),
       shape: RoundedRectangleBorder(
@@ -120,7 +144,7 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
                 child: new CircularPercentIndicator(
                   radius: 60,
                   lineWidth: 5,
-                  percent: (currAmount / amount),
+                  percent: ((currAmount>amount) ? 1.0 : currAmount/ amount),
                   progressColor: Colors.purple,
                   center: new Text(
                     midText,
@@ -194,21 +218,21 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
                       stream: Firestore.instance
                           .collection("dailyQuest")
                           .document(widget.userActCato)
-                          .collection(questDay)
+                          .collection(questDay.toString())
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<QuerySnapshot> snapshot) {
 //                        print(questDay);
-                        Firestore.instance
-                            .collection("users")
-                            .document(widget.userId)
-                            .collection("DailyQuest")
-                            .document("setting")
-                            .updateData({
-                          "date": newDate,
-                          "day": questDay,
-                          "complete": taskComplete
-                        });
+//                        Firestore.instance
+//                            .collection("users")
+//                            .document(widget.userId)
+//                            .collection("DailyQuest")
+//                            .document("setting")
+//                            .updateData({
+//                          "date": newDate,
+//                          "day": questDay,
+//                          "complete": taskComplete
+//                        });
                         if (snapshot.hasError)
                           return new Text('Error: ${snapshot.error}');
                         switch (snapshot.connectionState) {
@@ -218,6 +242,8 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
                             return new ListView(
                               children: snapshot.data.documents
                                   .map((DocumentSnapshot document) {
+//                                    print(document["task"]);
+
                                 return tasks(document["task"],
                                     document["activity"], document["amount"]);
                               }).toList(),
@@ -237,13 +263,13 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
                       stream: Firestore.instance
                           .collection("dailyQuest")
                           .document(widget.userActCato)
-                          .collection(questDay)
+                          .collection(questDay.toString())
                           .document("1")
                           .snapshots(),
                       builder: (BuildContext context,
                           AsyncSnapshot<DocumentSnapshot> snapshot) {
                         DocumentSnapshot goalDetails = snapshot.data;
-                        print(questDay);
+//                        print(questDay);
 
                         if (snapshot.hasError)
                           return new Text('Error: ${snapshot.error}');
