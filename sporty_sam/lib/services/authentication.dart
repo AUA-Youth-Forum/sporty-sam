@@ -39,7 +39,8 @@ class Auth implements BaseAuth {
       "email": email,
       "gender": "Other",
       "birthday": DateTime.now().toString(),
-      "country": defaultCountry
+      "country": defaultCountry,
+      "myScore" : 0
     });
 
     //print("dddddddddddddd");
