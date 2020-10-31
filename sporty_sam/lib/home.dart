@@ -424,7 +424,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   iconSize: 48.0,
                   color: Colors.black),
               IconButton(
-                  icon: Icon(Icons.fastfood),
+                  icon: Icon(Icons.coronavirus),
                   onPressed: () {
                     Navigator.push(
                         context,
