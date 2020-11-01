@@ -10,6 +10,7 @@ import 'dietTracker.dart';
 import 'myHealth.dart';
 import 'challenge.dart';
 import 'myProfile.dart';
+import 'dailyQuest.dart';
 
 import 'package:sporty_sam/services/authentication.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -53,7 +54,8 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 //
   String petMovement = "fail";
-
+//
+  String userActCato;
   signOut() async {
     try {
       await widget.auth.signOut();
@@ -101,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void setChartData() async {
-    double walk = 0, bicycle = 0, run = 0, still = 0, unknown = 0;
+    double walk = 0, bicycle = 0, run = 0, still = 0, unknown = 0, sleep=0;
     var result = await Firestore.instance
         .collection('users')
         .document(widget.userId)
@@ -121,8 +123,8 @@ class _MyHomePageState extends State<MyHomePage> {
         run += actLength.inSeconds;
       else if (res.data["type"] == "ON_BICYCLE")
         bicycle += actLength.inSeconds;
-//      else if (res.data["type"] == "UNKNOWN")
-//        unknown += actLength.inSeconds;
+      else if (res.data["type"] == "sleep")
+        sleep += actLength.inSeconds;
       else
         still += actLength.inSeconds;
     });
@@ -132,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> {
         "Running": run,
         "Cycling": bicycle,
         "Free": still,
-//        "UNKNOWN": unknown
+        "sleep": sleep
       };
       print("chart update");
     });
@@ -151,8 +153,10 @@ class _MyHomePageState extends State<MyHomePage> {
     dataMap.putIfAbsent("Running", () => 5);
     dataMap.putIfAbsent("Cycling", () => 5);
     dataMap.putIfAbsent("Free", () => 5);
+    dataMap.putIfAbsent("sleep", () => 5);
 //    dataMap.putIfAbsent("UNKNOWN", () => 5);
     setChartData();
+    Firestore.instance.collection("users").document(widget.userId).get().then((value) => userActCato=value["activityCategory"]);
   }
 
   //  void _checkEmailVerification() async {
@@ -221,15 +225,22 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
         body: Center(
       child: Stack(
-        alignment: Alignment.center,
+//        alignment: Alignment.center,
         children: <Widget>[
+          Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("lib/assets/back1.jpg"),
+                  fit: BoxFit.fitHeight,
+                )),
+          ),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
                 'Welcome to Sporty Sam',
-                style: Theme.of(context).textTheme.display1,
+                style: Theme.of(context).textTheme.headline4,
               ),
               InkWell(
                 child: Container(
@@ -238,9 +249,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Stack(children: <Widget>[
                     Center(
                       child: Text(
-                        "Daily Progress",
+                        "Daily\nProgress",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                            fontWeight: FontWeight.bold, fontSize: 20),textAlign: TextAlign.center,
                       ),
                     ),
                     PieChart(
@@ -413,7 +424,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   iconSize: 48.0,
                   color: Colors.black),
               IconButton(
-                  icon: Icon(Icons.fastfood),
+                  icon: Icon(Icons.coronavirus),
                   onPressed: () {
                     Navigator.push(
                         context,
@@ -461,6 +472,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => HealthTips()));
+                  },
+                  iconSize: 48.0,
+                  color: Colors.black),
+              IconButton(
+                  icon: Icon(Icons.golf_course),
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => DailyQuestPage(userId: widget.userId,userActCato: userActCato,dataMap: dataMap,)));
                   },
                   iconSize: 48.0,
                   color: Colors.black),
