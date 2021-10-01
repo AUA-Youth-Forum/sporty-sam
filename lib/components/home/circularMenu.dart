@@ -5,6 +5,7 @@ import 'package:fab_circular_menu/fab_circular_menu.dart';
 import 'package:sporty_sam/pages/activityHistory.dart';
 import 'package:sporty_sam/pages/dailyQuest.dart';
 import 'package:sporty_sam/pages/healthtips.dart';
+import 'package:sporty_sam/pages/leaderboard.dart';
 import 'package:sporty_sam/pages/profile.dart';
 import 'package:sporty_sam/pages/settings.dart';
 
@@ -77,6 +78,19 @@ class CircularMenu extends StatelessWidget {
                   shape: CircleBorder(),
                   padding: const EdgeInsets.all(24.0),
                   child: Icon(Icons.directions_run),
+                ),
+                RawMaterialButton(
+                  onPressed: () {
+                    // _showSnackBar(context, "You pressed 5. This one closes the menu on tap");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Leaderboard()));
+                    fabKey.currentState!.close();
+                  },
+                  shape: CircleBorder(),
+                  padding: const EdgeInsets.all(24.0),
+                  child: Icon(Icons.leaderboard),
                 ),
                 RawMaterialButton(
                   onPressed: () {
