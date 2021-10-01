@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:awesome_dialog/awesome_dialog.dart';
 class DailyQuestPage extends StatefulWidget {
   DailyQuestPage({
     Key key,
@@ -109,7 +109,14 @@ class _DailyQuestPageState extends State<DailyQuestPage> {
         Firestore.instance
             .collection("users")
             .document(widget.userId).updateData({"myScore":FieldValue.increment(10)});
-
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.SUCCES,
+        animType: AnimType.BOTTOMSLIDE,
+        title: 'Congratulations',
+        desc: 'You have earned $activityScore points',
+        btnOkOnPress: () {},
+      )..show();
       }
     });
   }
