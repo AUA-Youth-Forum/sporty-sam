@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:share/share.dart';
 
 class Leaderboard extends StatefulWidget {
   const Leaderboard({Key? key}) : super(key: key);
@@ -134,6 +135,9 @@ class _LeaderboardState extends State<Leaderboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       /* backgroundColor: Colors.lightBlueAccent, */
+      appBar: AppBar(
+        title: Text('Leaderboard'),
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -419,11 +423,13 @@ class _LeaderboardState extends State<Leaderboard> {
                       ),
                     ),
                   ),
-                  IconButton(icon: Icon(Icons.share), color: Colors.white, onPressed: (){},),
+                  IconButton(icon: Icon(Icons.share), color: Colors.white, onPressed: (){
+                    Share.share("I'm on the Leaderboard! Check out my score on the Sporty Sam app!");
+                  })
                 ],
               ),
             ),
-          )
+          ),
         ],
       ),
     );
