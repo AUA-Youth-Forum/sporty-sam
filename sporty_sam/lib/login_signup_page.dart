@@ -31,7 +31,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     }
     return false;
   }
-
+ bool validateAndSaves() {
+    final form = _formKey.currentState;
+    if (form.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
+  }
   // Perform login or signup
   void validateAndSubmit() async {
     setState(() {
